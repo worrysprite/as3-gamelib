@@ -23,6 +23,11 @@ package com.worrysprite.manager
 			return pools[type];
 		}
 		
+		/**
+		 * 产生一个对象
+		 * @param	type
+		 * @return
+		 */
 		public static function getObject(type:Class):Object
 		{
 			var pool:Array = getPool(type);
@@ -36,6 +41,11 @@ package com.worrysprite.manager
 			}
 		}
 		
+		/**
+		 * 销毁一个对象
+		 * @param	obj
+		 * @param	type
+		 */
 		public static function disposeObject(obj:Object, type:Class = null):void
 		{
 			if (obj == null)

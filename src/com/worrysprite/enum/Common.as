@@ -5,7 +5,7 @@ package com.worrysprite.enum
 	 * 通用常量
 	 * @author WorrySprite
 	 */
-	public class Common
+	public final class Common
 	{
 		/**
 		 * 灰色滤镜

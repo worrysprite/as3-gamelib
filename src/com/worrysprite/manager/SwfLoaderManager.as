@@ -1,6 +1,6 @@
 package com.worrysprite.manager
 {
-	import com.worrysprite.exception.SingletonError;
+	import com.worrysprite.enum.ExceptionEnum;
 	import com.worrysprite.model.loader.LoaderVo;
 	import com.worrysprite.model.swf.SwfDataVo;
 	import flash.display.LoaderInfo;
@@ -38,7 +38,7 @@ package com.worrysprite.manager
 		{
 			if (_instance != null)
 			{
-				throw new SingletonError(SingletonError.INSTANCE_DUPLICATE);
+				throw new Error(ExceptionEnum.getExceptionMsg(ExceptionEnum.SINGLETON_ERROR), ExceptionEnum.SINGLETON_ERROR);
 			}
 			_instance = this;
 			init();

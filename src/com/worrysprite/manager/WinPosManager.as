@@ -9,33 +9,72 @@ package com.worrysprite.manager
 	import flash.utils.Dictionary;
 
 	/**
-	 * 窗口定位管理器
+	 * 窗口定位管理器，用于全局舞台坐标定位
+	 * windows/panel position manager, locate by global stage coordinate
 	 * @author worrysprite
 	 */
-	public class WinPosManager
+	public final class WinPosManager
 	{
+		/**
+		 * 垂直自由
+		 * vertical free
+		 */
 		public static const V_FREE:int = 0x00;
+		/**
+		 * 垂直顶部
+		 * vertical top
+		 */
 		public static const V_TOP:int = 0x01;
+		/**
+		 * 垂直居中
+		 * vertical center
+		 */
 		public static const V_CENTER:int = 0x02;
+		/**
+		 * 垂直底部
+		 * vertical bottom
+		 */
 		public static const V_BOTTOM:int = 0x04;
+		/**
+		 * 水平自由
+		 * horizontal free
+		 */
 		public static const H_FREE:int = 0x00;
+		/**
+		 * 水平左部
+		 * horizontal left
+		 */
 		public static const H_LEFT:int = 0x10;
+		/**
+		 * 水平居中
+		 * horizontal center
+		 */
 		public static const H_CENTER:int = 0x20;
+		/**
+		 * 水平右部
+		 * horizontal right
+		 */
 		public static const H_RIGHT:int = 0x40;
+		
 		private static const V_MASK:int = 0x0F;
 		private static const H_MASK:int = 0xF0;
 		private static var datas:Dictionary = new Dictionary(true);
 		
 		/**
-		 * 注册一个窗口（显示对象）
-		 * @param win 显示对象
-		 * @param type 类型 在屏幕中心这样写：WinPosManager.V_CENTER | WinPosManager.H_CENTER
-		 * @param hPixels
-		 * @param vPixels
+		 * 注册一个窗口布局（任意显示对象，窗口或面板或按钮控件）
+		 * register a window layout(it can be any display object, windows or panels or button components)
+		 * @param win 需要布局的显示对象
+		 * the display object you want to layout
+		 * @param layoutType 布局类型，在舞台中心这样写：WinPosManager.V_CENTER | WinPosManager.H_CENTER
+		 * layout type, use <code>WinPosManager.V_CENTER | WinPosManager.H_CENTER</code> for center of the stage.
+		 * @param hOffset 水平偏移量
+		 * horizontal offset
+		 * @param vOffset 垂直偏移量
+		 * vertical offset
 		 */
-		public static function registerWin(win:DisplayObject, type:int = 0, hPixels:int = 0, vPixels:int = 0):void
+		public static function registerWin(win:DisplayObject, layoutType:int = 0, hOffset:int = 0, vOffset:int = 0):void
 		{
-			var posData:WinPosDataVo = new WinPosDataVo(win, type, hPixels, vPixels);
+			var posData:WinPosDataVo = new WinPosDataVo(win, layoutType, hOffset, vOffset);
 			datas[win] = posData;
 			if (win.stage)
 			{
@@ -46,14 +85,20 @@ package com.worrysprite.manager
 				win.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			}
 		}
-
+		
+		/**
+		 * 取消注册一个窗口布局
+		 * unregister a window layout
+		 * @param	win	已经注册过的窗口
+		 * the window already registered
+		 */
 		public static function unregisterWin(win:DisplayObject):void
 		{
 			delete datas[win];
 		}
 		
 		/**
-		 * 直接设置窗口位置, 相对舞台
+		 * 直接设置窗口布局
 		 * @param win
 		 * @param type
 		 * @param hPixels
@@ -65,6 +110,10 @@ package com.worrysprite.manager
 			setPos(posData);
 		}
 		
+		/**
+		 * 强制更新窗口布局
+		 * @param	win
+		 */
 		public static function updatePos(win:DisplayObject):void
 		{
 			var posData:WinPosDataVo = datas[win] as WinPosDataVo;
@@ -94,7 +143,7 @@ package com.worrysprite.manager
 			{
 				return;
 			}
-			var type:int = posData.type;
+			var type:int = posData.layoutType;
 			var pos:Point = new Point(posData.win.x, posData.win.y); // 坐标点
 			var rect:Rectangle;
 			if (posData.win.width == 0 || posData.win.height == 0)
@@ -133,11 +182,11 @@ package com.worrysprite.manager
 			}
 			if ((type & WinPosManager.H_MASK) != 0)
 			{
-				posData.win.x = rect.x + deltaPos.x + posData.hPixels;
+				posData.win.x = rect.x + deltaPos.x + posData.hOffset;
 			}
 			if ((type & WinPosManager.V_MASK) != 0)
 			{
-				posData.win.y = rect.y + deltaPos.y + posData.vPixels;
+				posData.win.y = rect.y + deltaPos.y + posData.vOffset;
 				if (posData.win.y < 0)
 				{
 					posData.win.y = 0;

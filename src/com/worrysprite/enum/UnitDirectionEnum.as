@@ -4,7 +4,7 @@ package com.worrysprite.enum
 	 * 单位方向
 	 * @author 王润智
 	 */
-	public class UnitDirectionEnum
+	public final class UnitDirectionEnum
 	{
 		/**
 		 * 右

@@ -4,7 +4,7 @@ package com.worrysprite.enum
 	 * 单位动作
 	 * @author 王润智
 	 */
-	public class UnitActionEnum
+	public final class UnitActionEnum
 	{
 		private static const FRAME_COUNT_TABLE:Array = [];
 		/**

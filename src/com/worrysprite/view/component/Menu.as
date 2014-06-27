@@ -1,6 +1,6 @@
 package com.worrysprite.view.component
 {
-	import com.worrysprite.exception.InheritError;
+	import com.worrysprite.enum.ExceptionEnum;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -64,7 +64,7 @@ package com.worrysprite.view.component
 		
 		protected function createItem(item:int):BitmapButton
 		{
-			throw new InheritError(InheritError.MUST_OVERRIDE);
+			throw new Error(ExceptionEnum.getExceptionMsg(ExceptionEnum.FUNCTION_MUST_BE_OVERRIDE), ExceptionEnum.FUNCTION_MUST_BE_OVERRIDE);
 			return null;
 		}
 		
