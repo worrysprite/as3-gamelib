@@ -18,31 +18,6 @@ package com.worrysprite.manager
 	 */
 	public class ResourceManager
 	{
-		public static const BUILD_ICON_CLASS:String = "com.ztstudio.ui.build.BuildingIcon";
-		public static const BUILD_LANDSCAPE_CLASS:String = "com.ztstudio.ui.build.BuildingLandscape";
-		public static const RACE_BORDER_CLASS:String = "com.ztstudio.ui.hero.RaceBorder";
-		public static const HERO_IMG_CLASS:String = "com.ztstudio.ui.hero.";
-		public static const HERO_HEADIMG_CLASS:String = "com.ztstudio.ui.hero.head.";
-		public static const HERO_BATTLE_HEAD_CLASS:String = "com.ztstudio.ui.hero.head2.";
-		public static const HERO_DISABLE_HEAD_CLASS:String = "com.ztstudio.ui.hero.headDisable.";
-		public static const UNIT_ICON_CLASS:String = "com.ztstudio.ui.unit.UnitIcon";
-		public static const RECRUIT_HERO_IMG_CLASS:String = "com.ztstudio.ui.recruitHero.";
-		public static const SKILL_ICON_CLASS:String = "com.ztstudio.ui.skill.SkillIcon";
-		public static const SHOPITEM_ICON_CLASS:String = "com.ztstudio.ui.shop.ShopProduct";
-		public static const SHOPITEM_SALE_CLASS:String = "com.ztstudio.ui.shop.SaleType";
-		public static const MAP_CLOUD_CLASS:String = "com.ztstudio.ui.map.Cloud";
-		public static const EQUIP_ICON_CLASS:String = "com.ztstudio.ui.equip.icon.";
-		public static const COPYSCENE_CLOUD_CLASS:String = "com.ztstudio.ui.army.CopySceneCloud";
-		public static const NPC_IMG_CLASS:String = "com.ztstudio.ui.npc.NpcImg";
-		public static const STORY_BG_CLASS:String = "com.ztstudio.ui.story.StoryBackground";
-		public static const COPYSCENE_TERRAIN:String = "com.ztstudio.ui.copy.Terrain";
-		public static const PLAYER_CHAT_HEAD:String = "com.ztstudio.ui.chat.PlayerHead";
-		public static const TERRAIN_CLASS:String = "com.ztstudio.map.MapAsset";
-		public static const ALLIANCE_ICON_CLASS:String = "com.ztstudio.ui.alliance.AllianceIcon";
-		
-		//public static const BATTLE_BACKGROUND_PATH:String = "app:/battle/background/";
-		//public static const BATTLE_FOREGROUND_PATH:String = "app:/battle/foreground/";
-		
 		private static const classBmpCache:Object = new Object();
 		private static const bmdCache:Object = new Object();	//位图缓存
 		private static const urlCache:Dictionary = new Dictionary(true); // bmp作为key，对应url

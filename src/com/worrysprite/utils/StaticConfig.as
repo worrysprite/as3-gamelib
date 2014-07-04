@@ -26,21 +26,34 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 创建和解析
-		 * @param	byte
-		 * @return
+		 * 由文本文件创建
+		 * @param	byte	文本文件的二进制字节
+		 * @return	解析好的配置
 		 */
 		public static function createFromByte(byte:ByteArray):StaticConfig
 		{
 			var config:StaticConfig = new StaticConfig();
-			config.readConfig(byte);
+			var str:String = byte.readUTFBytes(byte.length);
+			config.readConfig(str);
 			return config;
 		}
 		
-		private function readConfig(byte:ByteArray):void
+		/**
+		 * 由字符串创建
+		 * @param	str	XML字符串
+		 * @return	解析好的配置
+		 */
+		public static function createFromString(str:String):StaticConfig
+		{
+			var config:StaticConfig = new StaticConfig();
+			config.readConfig(str);
+			return config;
+		}
+		
+		private function readConfig(str:String):void
 		{
 			configData = new Object();
-			var xml:XML = XML(byte.readUTFBytes(byte.length));
+			var xml:XML = XML(str);
 			for each(var data:XML in xml.config)
 			{
 				configData[data.@name] = parseData(data);
@@ -62,6 +75,9 @@ package com.worrysprite.utils
 					
 				case "uint":
 					return uint(data.@value);
+					
+				case "Boolean":
+					return Boolean(data.@value);
 					
 				case "Number":
 					return Number(data.@value);

@@ -60,6 +60,11 @@ package com.worrysprite.manager
 		private static const H_MASK:int = 0xF0;
 		private static var datas:Dictionary = new Dictionary(true);
 		
+		public static function init(stage:Stage):void
+		{
+			stage.addEventListener(Event.RESIZE, resizeHandler);
+		}
+		
 		/**
 		 * 注册一个窗口布局（任意显示对象，窗口或面板或按钮控件）
 		 * register a window layout(it can be any display object, windows or panels or button components)
