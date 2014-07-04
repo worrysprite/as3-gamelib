@@ -5,10 +5,10 @@ package com.worrysprite.manager
 	import com.worrysprite.model.swf.SwfDataVo;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
-	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.System;
 	import flash.utils.ByteArray;
@@ -22,7 +22,6 @@ package com.worrysprite.manager
 		
 		private var queueLoader:LoaderVo;
 		private var queueRequest:URLRequest;
-		private var _loaderContext:LoaderContext;
 		private var urlQueue:Vector.<String>;
 		private var bytesQueue:Vector.<ByteArray>;
 		private var callbackQueue:Object;
@@ -33,6 +32,8 @@ package com.worrysprite.manager
 		private var callbackParamMap:Object;
 		
 		private var cache:Object;
+		
+		public var loaderContext:LoaderContext;
 		
 		public function SwfLoaderManager()
 		{
@@ -61,8 +62,6 @@ package com.worrysprite.manager
 			//初始化加载器和请求
 			queueLoader = new LoaderVo();
 			queueRequest = new URLRequest();
-			_loaderContext = new LoaderContext(false, ApplicationDomain.currentDomain);
-			_loaderContext.allowCodeImport = true;
 			queueLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onQueueLoaded);
 			queueLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
 		}
@@ -125,11 +124,6 @@ package com.worrysprite.manager
 			return urlQueue.length;
 		}
 		
-		public function get loaderContext():LoaderContext
-		{
-			return _loaderContext;
-		}
-		
 		public function loadNow(url:String, callback:Function, callbackParams:Array = null, context:LoaderContext = null):void
 		{
 			if (url == null)
@@ -144,7 +138,7 @@ package com.worrysprite.manager
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
 				if (context == null)
 				{
-					context = _loaderContext;
+					context = loaderContext;
 				}
 				cache[url] = loader;
 				callbackMap[url] = callback;
@@ -219,10 +213,13 @@ package com.worrysprite.manager
 		
 		private function onQueueLoaded(e:Event):void
 		{
-			var mc:MovieClip = queueLoader.content as MovieClip;
+			var mc:Sprite = queueLoader.content as Sprite;
 			if (mc)
 			{
-				mc.stop();
+				if (mc is MovieClip)
+				{
+					MovieClip(mc).stop();
+				}
 				cache[queueRequest.url] = new SwfDataVo(mc);
 			}
 			
@@ -266,11 +263,11 @@ package com.worrysprite.manager
 				var bytes:ByteArray = bytesQueue.shift();
 				if (bytes)
 				{
-					queueLoader.loadBytes(bytes, _loaderContext);
+					queueLoader.loadBytes(bytes, loaderContext);
 				}
 				else
 				{
-					queueLoader.load(queueRequest, _loaderContext);
+					queueLoader.load(queueRequest, loaderContext);
 				}
 			}
 			else

@@ -4,7 +4,7 @@ package com.worrysprite.model.swf
 	import com.worrysprite.enum.UnitDirectionEnum;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	/**
 	 * 储存使用工具生成的swf数据
@@ -17,10 +17,10 @@ package com.worrysprite.model.swf
 		
 		private var bitmapList:Array;
 		
-		private var _swf:MovieClip;
+		private var _swf:Sprite;
 		private var _actionType:int;	//类型，普通=0，动作=其他
 		
-		public function SwfDataVo(swf:MovieClip, type:int = 0)
+		public function SwfDataVo(swf:Sprite, type:int = 0)
 		{
 			_swf = swf;
 			_actionType = type;
@@ -128,7 +128,7 @@ package com.worrysprite.model.swf
 			return _actionType;
 		}
 		
-		public function get swf():MovieClip
+		public function get swf():Sprite
 		{
 			return _swf;
 		}
