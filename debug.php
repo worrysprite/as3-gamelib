@@ -47,9 +47,9 @@
 		}
 		return addslashes($realip);
 	}
-	
+	date_default_timezone_set('PRC');
 	$clientIP = getClientIP();
-	$string = "=====>>newlog from " . $clientIP . " \r\n";
+	$string = "new log from ---> " . $clientIP . "   time ---> " . date("H:m:s") . "\r\n";
 	$today = date("Ymd") . ".log";
 	try
 	{
