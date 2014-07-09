@@ -49,7 +49,7 @@
 	}
 	
 	$clientIP = getClientIP();
-	$string = "=====>>newlog from " . $clientIP . " \r\n";
+	$string = "new log from ---> " . $clientIP . "   time ---> " . date("H:m:s") . "\r\n";
 	$today = date("Ymd") . ".log";
 	try
 	{

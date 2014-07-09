@@ -64,15 +64,10 @@ package com.worrysprite.utils
 			{
 				return;
 			}
-			var str:String = "";
-			for (var i:int = 0; i < rest.length; ++i)
-			{
-				str += rest[i] + " ";
-			}
 			var request:URLRequest = new URLRequest(traceURL);
 			request.method = traceMethod;
 			request.contentType = "text/plain";
-			request.data = str;
+			request.data = rest.join("_");
 			
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onTraceComplete);
