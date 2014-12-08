@@ -31,7 +31,6 @@ package com.worrysprite.model.swf
 		{
 			if (!_swf)
 			{
-				trace("无效的动作包");
 				return;
 			}
 			

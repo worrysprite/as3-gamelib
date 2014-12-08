@@ -6,6 +6,8 @@ package com.worrysprite.effect
 	import com.worrysprite.model.swf.BitAndPos;
 	import com.worrysprite.model.swf.SwfDataVo;
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	/**
 	 * 特效播放
@@ -66,7 +68,7 @@ package com.worrysprite.effect
 			bitmapData = null;
 			if (_effectFile && _effectFile.lastIndexOf(".swf") >= 0)
 			{
-				swfData = SwfLoaderManager.getInstance().getSwf(_effectFile);
+				swfData = EffectManager.getSwf(_effectFile);
 				if (swfData)
 				{
 					_totalFrames = swfData.totalFrames;
@@ -95,9 +97,14 @@ package com.worrysprite.effect
 			}
 		}
 		
-		protected function onFileLoaded():void
+		protected function onFileLoaded(displayObj:DisplayObject):void
 		{
-			swfData = SwfLoaderManager.getInstance().getSwf(_effectFile);
+			swfData = EffectManager.getSwf(_effectFile);
+			if (!swfData)
+			{
+				swfData = new SwfDataVo(displayObj as Sprite);
+				EffectManager.addCache(_effectFile, swfData);
+			}
 			_totalFrames = swfData.totalFrames;
 			updateStatus();
 			if (isRevers)

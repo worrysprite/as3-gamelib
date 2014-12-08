@@ -64,7 +64,6 @@ package com.worrysprite.manager
 				if (bmdCache[url] == null) // Loader不存在才加载，不然会自动处理
 				{
 					var loader:LoaderVo = new LoaderVo();
-					loader.url = url;
 					bmdCache[url] = loader;
 					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, completeHandler);

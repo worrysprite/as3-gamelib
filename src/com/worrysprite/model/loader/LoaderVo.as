@@ -1,6 +1,8 @@
 package com.worrysprite.model.loader
 {
+	import flash.system.LoaderContext;
 	import flash.display.Loader;
+	import flash.net.URLRequest;
 	/**
 	 * 加载器
 	 * @author 王润智
@@ -19,9 +21,10 @@ package com.worrysprite.model.loader
 			return _url;
 		}
 		
-		public function set url(value:String):void
+		override public function load(request:URLRequest, context:LoaderContext = null):void
 		{
-			_url = value;
+			_url = request.url;
+			super.load(request, context);
 		}
 	}
 }

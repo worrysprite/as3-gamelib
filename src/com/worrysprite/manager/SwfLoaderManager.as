@@ -2,16 +2,14 @@ package com.worrysprite.manager
 {
 	import com.worrysprite.enum.ExceptionEnum;
 	import com.worrysprite.model.loader.LoaderVo;
-	import com.worrysprite.model.swf.SwfDataVo;
+	import flash.display.DisplayObject;
 	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.system.System;
-	import flash.utils.ByteArray;
 	/**
 	 * SWF加载管理器
 	 * @author 王润智
@@ -20,10 +18,11 @@ package com.worrysprite.manager
 	{
 		private static var _instance:SwfLoaderManager;
 		
+		private static const IS_QUEUE_LOADING:String = "is_queue_loading";
+		
 		private var queueLoader:LoaderVo;
 		private var queueRequest:URLRequest;
 		private var urlQueue:Vector.<String>;
-		private var bytesQueue:Vector.<ByteArray>;
 		private var callbackQueue:Object;
 		private var callbackParamQueue:Object;
 		private var queueIsLoading:Boolean;
@@ -32,6 +31,7 @@ package com.worrysprite.manager
 		private var callbackParamMap:Object;
 		
 		private var cache:Object;
+		private var needCache:Object;
 		
 		public var loaderContext:LoaderContext;
 		
@@ -49,7 +49,6 @@ package com.worrysprite.manager
 		{
 			//初始化队列
 			urlQueue = new Vector.<String>();
-			bytesQueue = new Vector.<ByteArray>();
 			callbackQueue = new Object();
 			callbackParamQueue = new Object();
 			
@@ -58,6 +57,7 @@ package com.worrysprite.manager
 			
 			//初始化缓存
 			cache = new Object();
+			needCache = new Object();
 			
 			//初始化加载器和请求
 			queueLoader = new LoaderVo();
@@ -76,43 +76,60 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 队列加载
+		 * 队列加载，可以指定全局loaderContext供整个队列使用
 		 * @param	url	加载地址
 		 * @param	callback	加载完成后的回调
 		 * @param	callbackParams	回调函数参数
+		 * @param	addCache	添加缓存
 		 */
-		public function queueLoad(url:String, callback:Function, callbackParams:Array = null, bytes:ByteArray = null):void
+		public function queueLoad(url:String, callback:Function, callbackParams:Array = null, addCache:Boolean = false):void
 		{
-			if (url == null)
+			//无效URL、没有回调且不添加缓存的加载没有意义
+			if (!url || (callback == null && !addCache))
 			{
 				return;
 			}
-			if (cache[url] == undefined) //未加载
+			if (cache[url] is DisplayObject)	//有缓存
 			{
-				cache[url] = "loading";
+				if (callback != null)
+				{
+					if (callbackParams == null)
+					{
+						callback(cache[url]);
+					}
+					else
+					{
+						callbackParams.unshift(cache[url]);
+						callback.apply(null, callbackParams);
+					}
+				}
+			}
+			else if (cache[url] == undefined) //未加载
+			{
+				cache[url] = IS_QUEUE_LOADING;
 				urlQueue.push(url);
-				bytesQueue.push(bytes);
 				callbackQueue[url] = new <Function>[callback];
 				callbackParamQueue[url] = new <Array>[callbackParams];
+				needCache[url] = addCache;
 				if (!queueIsLoading)
 				{
 					queueIsLoading = true;
 					loadNext();
 				}
 			}
-			else if (cache[url] == "loading" || cache[url] is LoaderVo)
+			else if (cache[url] == IS_QUEUE_LOADING)
 			{
-				//正在加载，不重复加载，只记录回调函数，等加载完成同时回调
+				//正在队列加载，不重复加载，只记录回调函数，等加载完成同时回调
 				callbackQueue[url].push(callback);
 				callbackParamQueue[url].push(callbackParams);
-				return;
+				needCache[url] ||= addCache;
 			}
-			else if (cache[url] is SwfDataVo)//已经加载过
+			else if (cache[url] is LoaderVo)
 			{
-				if (callback != null)
-				{
-					callback.apply(null, callbackParams);
-				}
+				//正在单独加载，记录回调函数，等加载完成后同时回调
+				callbackMap[url].push(callback);
+				callbackParamMap[url].push(callbackParams);
+				needCache[url] ||= addCache;
 			}
 		}
 		
@@ -124,16 +141,39 @@ package com.worrysprite.manager
 			return urlQueue.length;
 		}
 		
-		public function loadNow(url:String, callback:Function, callbackParams:Array = null, context:LoaderContext = null):void
+		/**
+		 * 立刻开启一个并发加载
+		 * @param	url	加载地址
+		 * @param	callback	回调函数
+		 * @param	callbackParams	回调函数参数
+		 * @param	context	加载选项，若未设置则使用全局loaderContext
+		 * @param	addCache	添加缓存
+		 */
+		public function loadNow(url:String, callback:Function, callbackParams:Array = null, context:LoaderContext = null, addCache:Boolean = false):void
 		{
-			if (url == null)
+			//无效URL、没有回调且不添加缓存的加载没有意义
+			if (!url || (callback == null && !addCache))
 			{
 				return;
 			}
-			if (cache[url] == undefined)
+			if (cache[url] is DisplayObject)	//有缓存
+			{
+				if (callback != null)
+				{
+					if (callbackParams == null)
+					{
+						callback(cache[url]);
+					}
+					else
+					{
+						callbackParams.unshift(cache[url]);
+						callback.apply(null, callbackParams);
+					}
+				}
+			}
+			else if (cache[url] == undefined)
 			{
 				var loader:LoaderVo = new LoaderVo();
-				loader.url = url;
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onLoaded);
 				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
 				if (context == null)
@@ -141,30 +181,50 @@ package com.worrysprite.manager
 					context = loaderContext;
 				}
 				cache[url] = loader;
-				callbackMap[url] = callback;
-				callbackParamMap[url] = callbackParams;
+				callbackMap[url] = new <Function>[callback];
+				callbackParamMap[url] = new <Array>[callbackParams];
+				needCache[url] = addCache;
 				loader.load(new URLRequest(url), context);
 			}
-			else if (cache[url] == "loading" || cache[url] is LoaderVo)
+			else if (cache[url] == IS_QUEUE_LOADING)
 			{
-				return;
+				//正在队列加载，从队列中移除开启新的并发加载
+				var index:int = urlQueue.indexOf(url);
+				urlQueue.splice(index, 1);
+				
+				//取出队列里的回调列表
+				var callbackList:Vector.<Function> = callbackQueue[url];
+				callbackList.push(callback);
+				var callbackParamList:Vector.<Array> = callbackParamQueue[url];
+				callbackParamList.push(callbackParams);
+				//移除队列中的记录
+				delete cache[url];
+				delete callbackQueue[url];
+				delete callbackParamQueue[url];
+				for (var i:int = 0; i < callbackList.length; ++i)
+				{
+					loadNow(url, callbackList[i], callbackParamList[i], context, addCache);
+				}
 			}
-			else if (cache[url] is SwfDataVo)
+			else if(cache[url] is LoaderVo)
 			{
-				callback.apply(null, callbackParams);
+				//正在单独加载，记录回调函数，等加载完成后同时回调
+				callbackMap[url].push(callback);
+				callbackParamMap[url].push(callbackParams);
+				needCache[url] ||= addCache;
 			}
 		}
 		
-		public function getSwf(url:String):SwfDataVo
+		public function getDisplayObject(url:String):DisplayObject
 		{
-			return cache[url] as SwfDataVo;
+			return cache[url] as DisplayObject;
 		}
 		
 		public function clearCache():void
 		{
 			for (var key:String in cache)
 			{
-				if (cache[key] is SwfDataVo)
+				if (cache[key] is DisplayObject)
 				{
 					delete cache[key];
 				}
@@ -175,52 +235,73 @@ package com.worrysprite.manager
 		private function onLoaded(e:Event):void
 		{
 			var info:LoaderInfo = e.currentTarget as LoaderInfo;
+			info.removeEventListener(Event.COMPLETE, onLoaded);
+			info.removeEventListener(IOErrorEvent.IO_ERROR, onError);
+			
 			var loader:LoaderVo = info.loader as LoaderVo;
-			//var originURL:String = "";
-			trace(loader.url, "加载成功");
-			var mc:MovieClip = loader.content as MovieClip;
+			var url:String = loader.url;
+			trace("加载成功", url);
+			var displayObj:DisplayObject = loader.content;
+			if (needCache[url])
+			{
+				cache[url] = displayObj;
+			}
+			else
+			{
+				delete cache[url];
+			}
+			delete needCache[url];
+			var mc:MovieClip = displayObj as MovieClip;
 			if (mc)
 			{
 				mc.stop();
-				cache[loader.url] = new SwfDataVo(mc);
-				var callback:Function = callbackMap[loader.url];
-				var params:Array = callbackParamMap[loader.url];
-				if (callback != null)
-				{
-					callback.apply(null, params);
-				}
 			}
+			var callbackList:Vector.<Function> = callbackMap[url];
+			var paramsList:Vector.<Array> = callbackParamMap[url];
+			
 			//卸载资源并移除侦听，删除回调函数的引用
 			loader.unload();
-			info.removeEventListener(Event.COMPLETE, onLoaded);
-			info.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-			delete callbackMap[loader.url];
-			delete callbackParamMap[loader.url];
+			delete callbackMap[url];
+			delete callbackParamMap[url];
+			//循环回调
+			loopCallback(callbackList, paramsList, displayObj);
 		}
 		
 		private function onError(e:IOErrorEvent):void
 		{
 			var info:LoaderInfo = e.currentTarget as LoaderInfo;
-			trace(e.toString());
-			
-			//卸载资源并移除侦听，删除回调函数的引用
-			info.loader.unload();
 			info.removeEventListener(Event.COMPLETE, onLoaded);
 			info.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-			delete callbackMap[info.url];
-			delete callbackParamMap[info.url];
+			
+			var loader:LoaderVo = info.loader as LoaderVo;
+			var url:String = loader.url;
+			trace("加载失败", url);
+			delete cache[url];
+			delete needCache[url];
+			
+			//卸载资源并移除侦听，删除回调函数的引用
+			loader.unload();
+			delete callbackMap[url];
+			delete callbackParamMap[url];
 		}
 		
 		private function onQueueLoaded(e:Event):void
 		{
-			var mc:Sprite = queueLoader.content as Sprite;
+			var displayObj:DisplayObject = queueLoader.content;
+			var url:String = queueRequest.url;
+			if (needCache[url])
+			{
+				cache[url] = displayObj;
+			}
+			else
+			{
+				delete cache[url];
+			}
+			delete needCache[url];
+			var mc:MovieClip = displayObj as MovieClip;
 			if (mc)
 			{
-				if (mc is MovieClip)
-				{
-					MovieClip(mc).stop();
-				}
-				cache[queueRequest.url] = new SwfDataVo(mc);
+				mc.stop();
 			}
 			
 			var callbackList:Vector.<Function> = callbackQueue[queueRequest.url];
@@ -230,29 +311,42 @@ package com.worrysprite.manager
 			
 			queueLoader.unload();
 			loadNext();
-			if (mc)
-			{
-				var callback:Function;
-				var params:Array;
-				for (var i:int = 0; i < callbackList.length; ++i)
-				{
-					callback = callbackList[i];
-					params = paramsList[i];
-					if (callback != null)
-					{
-						callback.apply(null, params);
-					}
-				}
-			}
+			
+			loopCallback(callbackList, paramsList, displayObj);
 		}
 		
 		private function onQueueLoadError(e:IOErrorEvent):void
 		{
+			var url:String = queueRequest.url;
 			trace("队列加载失败，url =", queueRequest.url);
-			delete cache[queueRequest.url];
-			delete callbackQueue[queueRequest.url];
-			delete callbackParamQueue[queueRequest.url];
+			delete cache[url];
+			delete needCache[url];
+			delete callbackQueue[url];
+			delete callbackParamQueue[url];
 			loadNext();
+		}
+		
+		private function loopCallback(callbackList:Vector.<Function>, paramsList:Vector.<Array>, data:DisplayObject):void
+		{
+			var callback:Function;
+			var params:Array;
+			for (var i:int = 0; i < callbackList.length; ++i)
+			{
+				callback = callbackList[i];
+				if (callback != null)
+				{
+					params = paramsList[i];
+					if (params == null)
+					{
+						callback(data);
+					}
+					else
+					{
+						params.unshift(data);
+						callback.apply(null, params);
+					}
+				}
+			}
 		}
 		
 		private function loadNext():void
@@ -260,15 +354,7 @@ package com.worrysprite.manager
 			if (urlQueue.length)
 			{
 				queueRequest.url = urlQueue.shift();
-				var bytes:ByteArray = bytesQueue.shift();
-				if (bytes)
-				{
-					queueLoader.loadBytes(bytes, loaderContext);
-				}
-				else
-				{
-					queueLoader.load(queueRequest, loaderContext);
-				}
+				queueLoader.load(queueRequest, loaderContext);
 			}
 			else
 			{
