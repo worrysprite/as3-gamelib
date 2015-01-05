@@ -19,17 +19,17 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 远程日志地址
+		 * 远程日志地址<br/>
 		 * remote log url
 		 */
 		public static var traceURL:String;
 		/**
-		 * 远程trace时发送的方法，URLRequestMethod中的常量
+		 * 远程trace时发送的方法，URLRequestMethod中的常量<br/>
 		 * remote trace method, use constant in URLRequestMethod
 		 */
 		public static var traceMethod:String = URLRequestMethod.GET;
 		/**
-		 * 返回值回调函数，需要有一个参数
+		 * 返回值回调函数，需要有一个参数<br/>
 		 * call back function to receive returned value, must have one param
 		 */
 		public static var resultFunc:Function;
@@ -53,9 +53,9 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 发送信息到远程服务器
+		 * 发送信息到远程服务器<br/>
 		 * send message to remote server
-		 * @param	...rest	像trace()一样的参数
+		 * @param	...rest	像trace()一样的参数<br/>
 		 * use it like trace()
 		 */
 		public static function traceRemote(...rest):void
@@ -76,10 +76,10 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 发送键值对到远程服务器
+		 * 发送键值对到远程服务器<br/>
 		 * send key value map to remote server
-		 * @param	webParams	网页参数，像key1=value1&key2=value2&key3=value3
-		 * web params such as key1=value1&key2=value2&key3=value3
+		 * @param	webParams	网页参数，像key1=value1&amp;key2=value2&amp;key3=value3<br/>
+		 * web params such as key1=value1&amp;key2=value2&amp;key3=value3
 		 */
 		public static function traceKeyValue(webParams:String):void
 		{

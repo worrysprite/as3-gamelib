@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../../override.css" type="text/css"><meta name="keywords" content="WinPosManager,com.worrysprite.manager.WinPosManager,H_CENTER,H_FREE,H_LEFT,H_RIGHT,V_BOTTOM,V_CENTER,V_FREE,V_TOP,globalStage,loaderContext,queueLength,queueLength,addFrameCall,addTimeCall,checkIsImage,clear,clearCache,clearCache,disposeObject,getBitmapResource,getBitmap,getDataFromCache,getDisplayObject,getInstance,getInstance,getObject,getResourceByID,getResourceByName,init,init,init,loadNow,loadNow,queueLoad,queueLoad,registerWin,removeFrameCall,removeTimeCall,setWinPos,unregisterWin,updatePos"><title>com.worrysprite.manager.WinPosManager</title></head><body><script language="javascript" type="text/javascript" src="../../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../../help.js"></script><script language="javascript" type="text/javascript" src="../../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'WinPosManager - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../../package-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../../class-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../../all-index-A.html" onclick="loadClassListFrame('../../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../../index.html?com/worrysprite/manager/WinPosManager.html&amp;com/worrysprite/manager/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">WinPosManager</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("WinPosManager"); titleBar_setSubNav(true,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">com.worrysprite.manager</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public final   class  WinPosManager</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">WinPosManager  <img src="../../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><p></p><p></p>
+	 窗口定位管理器，用于全局舞台坐标定位
+	 windows/panel position manager, locate by global stage coordinate
+	 <p></p><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#init()" class="signatureLink">init</a>(stage:Stage):void</div><div class="summaryTableDescription">[static] </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#registerWin()" class="signatureLink">registerWin</a>(win:DisplayObject, layoutType:int = 0, hOffset:int = 0, vOffset:int = 0):void</div><div class="summaryTableDescription">[static] 
+		 注册一个窗口布局（任意显示对象，窗口或面板或按钮控件）
+		 register a window layout(it can be any display object, windows or panels or button components)
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#setWinPos()" class="signatureLink">setWinPos</a>(win:DisplayObject, type:int = 0, hPixels:int = 0, vPixels:int = 0):void</div><div class="summaryTableDescription">[static] 
+		 直接设置窗口布局
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#unregisterWin()" class="signatureLink">unregisterWin</a>(win:DisplayObject):void</div><div class="summaryTableDescription">[static] 
+		 取消注册一个窗口布局
+		 unregister a window layout
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#updatePos()" class="signatureLink">updatePos</a>(win:DisplayObject):void</div><div class="summaryTableDescription">[static] 
+		 强制更新窗口布局
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr></table></div><a name="constantSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Constants</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableConstant"><tr><th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#H_CENTER" class="signatureLink">H_CENTER</a> : int = 0x20<div class="summaryTableDescription">[static] 
+		 水平居中
+		 horizontal center
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#H_FREE" class="signatureLink">H_FREE</a> : int = 0x00<div class="summaryTableDescription">[static] 
+		 水平自由
+		 horizontal free
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#H_LEFT" class="signatureLink">H_LEFT</a> : int = 0x10<div class="summaryTableDescription">[static] 
+		 水平左部
+		 horizontal left
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#H_RIGHT" class="signatureLink">H_RIGHT</a> : int = 0x40<div class="summaryTableDescription">[static] 
+		 水平右部
+		 horizontal right
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#V_BOTTOM" class="signatureLink">V_BOTTOM</a> : int = 0x04<div class="summaryTableDescription">[static] 
+		 垂直底部
+		 vertical bottom
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#V_CENTER" class="signatureLink">V_CENTER</a> : int = 0x02<div class="summaryTableDescription">[static] 
+		 垂直居中
+		 vertical center
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#V_FREE" class="signatureLink">V_FREE</a> : int = 0x00<div class="summaryTableDescription">[static] 
+		 垂直自由
+		 vertical free
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#V_TOP" class="signatureLink">V_TOP</a> : int = 0x01<div class="summaryTableDescription">[static] 
+		 垂直顶部
+		 vertical top
+		 </div></td><td class="summaryTableOwnerCol">WinPosManager</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="init()"></a><a name="init(flash.display.Stage)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">init</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public static function init(stage:Stage):void</code><p></p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">stage</span>:Stage</code></td></tr></table></p></div><a name="registerWin()"></a><a name="registerWin(flash.display.DisplayObject,int,int,int)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">registerWin</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function registerWin(win:DisplayObject, layoutType:int = 0, hOffset:int = 0, vOffset:int = 0):void</code><p></p><p></p><p>
+		 注册一个窗口布局（任意显示对象，窗口或面板或按钮控件）
+		 register a window layout(it can be any display object, windows or panels or button components)
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">win</span>:DisplayObject</code> &mdash; 需要布局的显示对象
+		 the display object you want to layout
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">layoutType</span>:int</code> (default = <code>0</code>)<code></code> &mdash; 布局类型，在舞台中心这样写：WinPosManager.V_CENTER | WinPosManager.H_CENTER
+		 layout type, use <code>WinPosManager.V_CENTER | WinPosManager.H_CENTER</code> for center of the stage.
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">hOffset</span>:int</code> (default = <code>0</code>)<code></code> &mdash; 水平偏移量
+		 horizontal offset
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">vOffset</span>:int</code> (default = <code>0</code>)<code></code> &mdash; 垂直偏移量
+		 vertical offset
+		 </td></tr></table></p></div><a name="setWinPos()"></a><a name="setWinPos(flash.display.DisplayObject,int,int,int)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">setWinPos</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function setWinPos(win:DisplayObject, type:int = 0, hPixels:int = 0, vPixels:int = 0):void</code><p></p><p></p><p>
+		 直接设置窗口布局
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">win</span>:DisplayObject</code></td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">type</span>:int</code> (default = <code>0</code>)<code></code></td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">hPixels</span>:int</code> (default = <code>0</code>)<code></code></td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">vPixels</span>:int</code> (default = <code>0</code>)<code></code></td></tr></table></p></div><a name="unregisterWin()"></a><a name="unregisterWin(flash.display.DisplayObject)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">unregisterWin</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function unregisterWin(win:DisplayObject):void</code><p></p><p></p><p>
+		 取消注册一个窗口布局
+		 unregister a window layout
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">win</span>:DisplayObject</code> &mdash; 已经注册过的窗口
+		 the window already registered
+		 </td></tr></table></p></div><a name="updatePos()"></a><a name="updatePos(flash.display.DisplayObject)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">updatePos</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function updatePos(win:DisplayObject):void</code><p></p><p></p><p>
+		 强制更新窗口布局
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">win</span>:DisplayObject</code></td></tr></table></p></div><div class="detailSectionHeader">Constant Detail</div><a name="constantDetail"></a><a name="H_CENTER"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">H_CENTER</td><td class="detailHeaderType">Constant</td></tr></table><div class="detailBody"><code>public static const H_CENTER:int = 0x20</code><p></p><p></p><p>
+		 水平居中
+		 horizontal center
+		 </p></div><a name="constantDetail"></a><a name="H_FREE"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">H_FREE</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const H_FREE:int = 0x00</code><p></p><p></p><p>
+		 水平自由
+		 horizontal free
+		 </p></div><a name="constantDetail"></a><a name="H_LEFT"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">H_LEFT</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const H_LEFT:int = 0x10</code><p></p><p></p><p>
+		 水平左部
+		 horizontal left
+		 </p></div><a name="constantDetail"></a><a name="H_RIGHT"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">H_RIGHT</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const H_RIGHT:int = 0x40</code><p></p><p></p><p>
+		 水平右部
+		 horizontal right
+		 </p></div><a name="constantDetail"></a><a name="V_BOTTOM"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">V_BOTTOM</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const V_BOTTOM:int = 0x04</code><p></p><p></p><p>
+		 垂直底部
+		 vertical bottom
+		 </p></div><a name="constantDetail"></a><a name="V_CENTER"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">V_CENTER</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const V_CENTER:int = 0x02</code><p></p><p></p><p>
+		 垂直居中
+		 vertical center
+		 </p></div><a name="constantDetail"></a><a name="V_FREE"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">V_FREE</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const V_FREE:int = 0x00</code><p></p><p></p><p>
+		 垂直自由
+		 vertical free
+		 </p></div><a name="constantDetail"></a><a name="V_TOP"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">V_TOP</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const V_TOP:int = 0x01</code><p></p><p></p><p>
+		 垂直顶部
+		 vertical top
+		 </p></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Mon Jan 5 2015, 08:21 PM +08:00  </center></div></body></html><!--<br/>Mon Jan 5 2015, 08:21 PM +08:00  -->

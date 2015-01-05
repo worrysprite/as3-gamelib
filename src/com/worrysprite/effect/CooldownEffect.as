@@ -12,14 +12,23 @@ package com.worrysprite.effect
 	 */
 	public class CooldownEffect extends Sprite
 	{
-		public static const COOLDOWN_END:String = "eventEnd"; //结束事件
-		public static const COOLDOWN_START:String = "eventStart"; //开始事件
+		/**
+		 * CD结束事件
+		 * cooldown end event
+		 */
+		public static const COOLDOWN_END:String = "cooldown_end";
+		/**
+		 * CD开始事件
+		 * cooldown start event
+		 */
+		public static const COOLDOWN_START:String = "cooldown_start";
+		
 		public var color:uint = 0x000000; // 颜色
 		public var alphaC:Number = 0.6; // 透明度
 		public var isAnti:Boolean = false; // 是否逆时针（剩余的比过去的时间亮）
 		public var isRect:Boolean = false; // 是否矩形
-		public var a:Number; // 矩形半宽，椭圆的a
-		public var b:Number; // 矩形半高，椭圆的b
+		private var a:Number; // 矩形半宽，椭圆的a
+		private var b:Number; // 矩形半高，椭圆的b
 		public var startFrom:Number = 270; // 从270度开始画
 		public var delay:int = 0; // 延迟时间，负数表示已经过了多久（单位：毫秒）
 		public var duration:int = 0; // CD时间，单位：毫秒
@@ -37,10 +46,10 @@ package com.worrysprite.effect
 		 */
 		public function CooldownEffect(w:Number, h:Number = 0, isRect:Boolean = true, isHighLight:Boolean = false)
 		{
-			this.mouseEnabled = false;
-			this.mouseChildren = false;
+			mouseEnabled = false;
+			mouseChildren = false;
 			this.isRect = isRect;
-			this.isAnti = isHighLight;
+			isAnti = isHighLight;
 			setSize(w, h);
 		}
 		
@@ -49,17 +58,17 @@ package com.worrysprite.effect
 			h == 0 && (h = w);
 			if (isRect)
 			{
-				this.a = w * Math.SQRT1_2;
-				this.b = h * Math.SQRT1_2;
+				a = w * Math.SQRT1_2;
+				b = h * Math.SQRT1_2;
 			}
 			else
 			{
-				this.a = w * 0.5;
-				this.b = h * 0.5;
+				a = w * 0.5;
+				b = h * 0.5;
 			}
-			this.basePos = new Point(w * 0.5, h * 0.5);
+			basePos = new Point(w * 0.5, h * 0.5);
 			rect = new Rectangle(0, 0, w, h);
-			this.scrollRect = rect;
+			scrollRect = rect;
 		}
 		
 		/**
@@ -80,12 +89,12 @@ package com.worrysprite.effect
 				}
 				stop();
 			}
-			this.duration = $duration;
-			this.delay = $delay;
-			this.startTime = time;
-			this.isCooling = true;
-			this.addEventListener(Event.ENTER_FRAME, draw);
-			this.dispatchEvent(new Event(COOLDOWN_START)); //派发事件
+			duration = $duration;
+			delay = $delay;
+			startTime = time;
+			isCooling = true;
+			addEventListener(Event.ENTER_FRAME, draw);
+			dispatchEvent(new Event(COOLDOWN_START)); //派发事件
 		}
 		
 		/**
@@ -94,8 +103,8 @@ package com.worrysprite.effect
 		public function stop():void
 		{
 			isCooling = false;
-			this.removeEventListener(Event.ENTER_FRAME, draw);
-			this.dispatchEvent(new Event(COOLDOWN_END)); //派发事件
+			removeEventListener(Event.ENTER_FRAME, draw);
+			dispatchEvent(new Event(COOLDOWN_END)); //派发事件
 		}
 		
 		/**
@@ -112,14 +121,14 @@ package com.worrysprite.effect
 		 */
 		private function clear():void
 		{
-			this.graphics.clear();
+			graphics.clear();
 		}
 		
 		protected function draw(e:Event):void
 		{
 			clear();
-			var timePast:int = getTimer() - this.startTime - this.delay;
-			if (timePast >= this.duration)
+			var timePast:int = getTimer() - startTime - delay;
+			if (timePast >= duration)
 			{
 				// 冷却结束
 				stop();
@@ -131,7 +140,7 @@ package com.worrysprite.effect
 			}
 			else
 			{
-				angle = timePast * 360 / this.duration;
+				angle = timePast * 360 / duration;
 			}
 			drawBack();
 			drawAngle(angle);
@@ -139,16 +148,16 @@ package com.worrysprite.effect
 		
 		protected function drawBack():void
 		{
-			this.graphics.beginFill(0xffcccc, 0);
-			if (this.isRect)
+			graphics.beginFill(0xffcccc, 0);
+			if (isRect)
 			{
-				this.graphics.drawRect(0, 0, rect.width, rect.height);
+				graphics.drawRect(0, 0, rect.width, rect.height);
 			}
 			else
 			{
-				this.graphics.drawEllipse(0, 0, rect.width, rect.height);
+				graphics.drawEllipse(0, 0, rect.width, rect.height);
 			}
-			this.graphics.endFill();
+			graphics.endFill();
 		}
 		
 		/**
@@ -157,29 +166,21 @@ package com.worrysprite.effect
 		 */
 		protected function drawAngle(angle:Number):void
 		{
-			!isAnti && (angle = 360 - angle);
-			this.drawSector(angle, isAnti);
-		}
-		
-		/**
-		 * 画椭圆扇形
-		 * @param angle 角度
-		 * @param anti 是否逆时针
-		 */
-		protected function drawSector(angle:Number, anti:Boolean = false):void
-		{
 			var factor:int = 1;
-			anti || (factor = -1);
-			this.graphics.beginFill(color, alphaC);
-			this.graphics.lineStyle(0, color, 0);
-			this.graphics.moveTo(basePos.x, basePos.y);
+			if (!isAnti)
+			{
+				angle = 360 - angle;
+				factor = -1;
+			}
+			graphics.beginFill(color, alphaC);
+			graphics.moveTo(basePos.x, basePos.y);
 			angle = (Math.abs(angle) > 360) ? 360 : angle;
 			var n:Number = Math.ceil(Math.abs(angle) / 45);
 			var angleA:Number = angle / n;
 			angleA = angleA * Math.PI / 180;
 			var curA:Number = startFrom;
 			curA = curA * Math.PI / 180;
-			this.graphics.lineTo(basePos.x + a * Math.cos(curA), basePos.y + b * Math.sin(curA));
+			graphics.lineTo(basePos.x + a * Math.cos(curA), basePos.y + b * Math.sin(curA));
 			for (var i:int = 0; i < n; ++i)
 			{
 				curA += factor * angleA;
@@ -188,9 +189,9 @@ package com.worrysprite.effect
 				var by:Number = b / Math.cos(angleA / 2) * Math.sin(angleMid);
 				var cx:Number = a * Math.cos(curA);
 				var cy:Number = b * Math.sin(curA);
-				this.graphics.curveTo(basePos.x + bx, basePos.y + by, basePos.x + cx, basePos.y + cy);
+				graphics.curveTo(basePos.x + bx, basePos.y + by, basePos.x + cx, basePos.y + cy);
 			}
-			this.graphics.endFill();
+			graphics.endFill();
 		}
 	}
 }
