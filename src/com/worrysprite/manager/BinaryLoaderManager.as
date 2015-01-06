@@ -143,6 +143,14 @@ package com.worrysprite.manager
 		}
 		
 		/**
+		 * 队列正在处理的URL
+		 */
+		public function get processingURL():String
+		{
+			return queueRequest.url;
+		}
+		
+		/**
 		 * 立刻开启一个并发加载，如果URL在加载队列中则从队列中移除，如果format与队列加载中不一致，将使用本次调用的值
 		 * @param	url	加载地址
 		 * @param	format	加载格式，URLLoaderDataFormat里的值
@@ -362,6 +370,7 @@ package com.worrysprite.manager
 			}
 			else
 			{
+				queueRequest.url = null;
 				queueIsLoading = false;
 			}
 		}

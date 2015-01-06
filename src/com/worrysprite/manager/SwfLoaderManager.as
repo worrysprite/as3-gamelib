@@ -10,6 +10,7 @@ package com.worrysprite.manager
 	import flash.net.URLRequest;
 	import flash.system.LoaderContext;
 	import flash.system.System;
+	import flash.utils.ByteArray;
 	/**
 	 * SWF加载管理器
 	 * @author 王润智
@@ -32,6 +33,10 @@ package com.worrysprite.manager
 		
 		private var cache:Object;
 		private var needCache:Object;
+		
+		private var bytesLoaderInfos:Vector.<LoaderInfo>;
+		private var bytesCallback:Vector.<Function>;
+		private var bytesCallbackParams:Vector.<Array>;
 		
 		public var loaderContext:LoaderContext;
 		
@@ -58,6 +63,10 @@ package com.worrysprite.manager
 			//初始化缓存
 			cache = new Object();
 			needCache = new Object();
+			
+			bytesLoaderInfos = new Vector.<LoaderInfo>();
+			bytesCallback = new Vector.<Function>();
+			bytesCallbackParams = new Vector.<Array>();
 			
 			//初始化加载器和请求
 			queueLoader = new LoaderVo();
@@ -139,6 +148,14 @@ package com.worrysprite.manager
 		public function get queueLength():int
 		{
 			return urlQueue.length;
+		}
+		
+		/**
+		 * 队列正在处理的URL
+		 */
+		public function get processingURL():String
+		{
+			return queueRequest.url;
 		}
 		
 		/**
@@ -230,6 +247,26 @@ package com.worrysprite.manager
 				}
 			}
 			System.gc();
+		}
+		
+		public function loadBytes(bytes:ByteArray, callback:Function, callbackParams:Array = null, context:LoaderContext = null):void
+		{
+			if (!bytes || callback == null)
+			{
+				return;
+			}
+			
+			var loader:LoaderVo = new LoaderVo();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onBytesLoaded);
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onBytesLoadError);
+			if (context == null)
+			{
+				context = loaderContext;
+			}
+			bytesLoaderInfos.push(loader.loaderInfo);
+			bytesCallback.push(callback);
+			bytesCallbackParams.push(callbackParams);
+			loader.loadBytes(bytes, context);
 		}
 		
 		private function onLoaded(e:Event):void
@@ -326,6 +363,41 @@ package com.worrysprite.manager
 			loadNext();
 		}
 		
+		private function onBytesLoaded(e:Event):void
+		{
+			var loaderInfo:LoaderInfo = e.currentTarget as LoaderInfo;
+			loaderInfo.removeEventListener(Event.COMPLETE, onBytesLoaded);
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onBytesLoadError);
+			var index:int = bytesLoaderInfos.indexOf(loaderInfo);
+			if (index >= 0)
+			{
+				var callback:Function = bytesCallback.splice(index, 1)[0];
+				var callbackParams:Array = bytesCallbackParams.splice(index, 1)[0];
+				if (callbackParams)
+				{
+					callbackParams.unshift(loaderInfo.content);
+					callback.apply(null, callbackParams);
+				}
+				else
+				{
+					callback(loaderInfo.content);
+				}
+			}
+		}
+		
+		private function onBytesLoadError(e:Event):void
+		{
+			var loaderInfo:LoaderInfo = e.currentTarget as LoaderInfo;
+			loaderInfo.removeEventListener(Event.COMPLETE, onBytesLoaded);
+			loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onBytesLoadError);
+			var index:int = bytesLoaderInfos.indexOf(loaderInfo);
+			if (index >= 0)
+			{
+				bytesCallback.splice(index, 1);
+				bytesCallbackParams.splice(index, 1);
+			}
+		}
+		
 		private function loopCallback(callbackList:Vector.<Function>, paramsList:Vector.<Array>, data:DisplayObject):void
 		{
 			var callback:Function;
@@ -358,6 +430,7 @@ package com.worrysprite.manager
 			}
 			else
 			{
+				queueRequest.url = null;
 				queueIsLoading = false;
 			}
 		}

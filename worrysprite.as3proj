@@ -8,9 +8,9 @@
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
-    <movie version="11" />
+    <movie version="3" />
     <movie minorVersion="9" />
-    <movie platform="Flash Player" />
+    <movie platform="AIR" />
     <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -79,7 +79,7 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>"$(CompilerPath)\bin\compc.exe" -include-sources "$(ProjectDir)\src" -output "$(OutputDir)\$(OutputName)"</preBuildCommand>
+  <preBuildCommand>"$(CompilerPath)\bin\compc.exe" +configname=air -include-sources "$(ProjectDir)\src" -output "$(OutputDir)\$(OutputName)"</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
@@ -89,5 +89,8 @@
     <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
-  <storage />
+  <storage>
+    <entry key="at_enabled"><![CDATA[0]]></entry>
+    <entry key="at_password"><![CDATA[]]></entry>
+  </storage>
 </project>

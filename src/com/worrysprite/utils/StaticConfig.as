@@ -50,7 +50,7 @@ package com.worrysprite.utils
 			return config;
 		}
 		
-		private function readConfig(str:String):void
+		public function readConfig(str:String):void
 		{
 			configData = new Object();
 			var xml:XML = XML(str);
@@ -107,7 +107,7 @@ package com.worrysprite.utils
 		static private function parseObject(className:String, fields:XMLList):Object
 		{
 			var domain:ApplicationDomain = ApplicationDomain.currentDomain;
-			if (!domain.hasDefinition(className))	//当前域没有则找GameProject域
+			if (!domain.hasDefinition(className))
 			{
 				trace("找不到类型定义：", className);
 				return null;
