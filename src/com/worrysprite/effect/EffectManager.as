@@ -1,6 +1,6 @@
 package com.worrysprite.effect
 {
-	import com.worrysprite.model.swf.SwfDataVo;
+	import com.worrysprite.model.image.AEPFile;
 	/**
 	 * 特效管理器，加载和缓存特效资源
 	 * @author WorrySprite
@@ -9,14 +9,14 @@ package com.worrysprite.effect
 	{
 		private static var effectCache:Object = new Object();
 		
-		public static function getSwf(url:String):SwfDataVo
+		public static function getEffectFile(url:String):AEPFile
 		{
-			return effectCache[url] as SwfDataVo;
+			return effectCache[url] as AEPFile;
 		}
 		
-		public static function addCache(url:String, swf:SwfDataVo):void
+		public static function addCache(url:String, effectFile:AEPFile):void
 		{
-			effectCache[url] = swf;
+			effectCache[url] = effectFile;
 		}
 		
 		public static function removeCache(url:String):void

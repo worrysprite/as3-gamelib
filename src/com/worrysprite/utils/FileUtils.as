@@ -47,10 +47,10 @@ package com.worrysprite.utils
 			try
 			{
 				file.nativePath = pathOrURL;
-				if (!file.exists || (extensions && extensions.indexOf(file.extension) == -1))
+				if (!file.exists || (extensions && extensions.indexOf(getLowerCaseExt(file)) == -1))
 				{
 					file.url = pathOrURL;
-					if (!file.exists || (extensions && extensions.indexOf(file.extension) == -1))
+					if (!file.exists || (extensions && extensions.indexOf(getLowerCaseExt(file)) == -1))
 					{
 						return false;
 					}
@@ -61,6 +61,57 @@ package com.worrysprite.utils
 				return false;
 			}
 			return true;
+		}
+		
+		public static function splitPathAndName(pathOrURL:String):Array
+		{
+			var index1:int = pathOrURL.lastIndexOf("/");
+			var index2:int = pathOrURL.lastIndexOf("\\");
+			var index:int = index1 > index2 ? index1 : index2;
+			return [pathOrURL.substr(0, index), pathOrURL.substr(index + 1)];
+		}
+		
+		public static function splitNameAndExt(fileName:String):Array
+		{
+			var index:int = fileName.lastIndexOf(".");
+			if (index > 0)
+			{
+				return [fileName.substr(0, index), fileName.substr(index + 1)];
+			}
+			else
+			{
+				return [fileName, ""];
+			}
+		}
+		
+		public static function isImage(file:File):Boolean
+		{
+			return isPNG(file) || isJPEG(file);
+		}
+		
+		public static function isPNG(file:File):Boolean
+		{
+			var ext:String = getLowerCaseExt(file);
+			return ext == "png";
+		}
+		
+		public static function isJPEG(file:File):Boolean
+		{
+			var ext:String = getLowerCaseExt(file);
+			return ext == "jpg" || ext == "jpeg";
+		}
+		
+		public static function getLowerCaseExt(file:File):String
+		{
+			if (file && !file.isDirectory)
+			{
+				var ext:String = file.extension;
+				if (ext)
+				{
+					return ext.toLowerCase();
+				}
+			}
+			return "";
 		}
 	}
 

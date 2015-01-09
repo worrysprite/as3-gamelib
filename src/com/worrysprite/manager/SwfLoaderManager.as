@@ -263,7 +263,7 @@ package com.worrysprite.manager
 			{
 				context = loaderContext;
 			}
-			bytesLoaderInfos.push(loader.loaderInfo);
+			bytesLoaderInfos.push(loader.contentLoaderInfo);
 			bytesCallback.push(callback);
 			bytesCallbackParams.push(callbackParams);
 			loader.loadBytes(bytes, context);
@@ -373,6 +373,7 @@ package com.worrysprite.manager
 			{
 				var callback:Function = bytesCallback.splice(index, 1)[0];
 				var callbackParams:Array = bytesCallbackParams.splice(index, 1)[0];
+				bytesLoaderInfos.splice(index, 1);
 				if (callbackParams)
 				{
 					callbackParams.unshift(loaderInfo.content);
@@ -395,6 +396,7 @@ package com.worrysprite.manager
 			{
 				bytesCallback.splice(index, 1);
 				bytesCallbackParams.splice(index, 1);
+				bytesLoaderInfos.splice(index, 1);
 			}
 		}
 		

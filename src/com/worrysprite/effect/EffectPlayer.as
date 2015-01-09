@@ -1,37 +1,79 @@
 package com.worrysprite.effect
 {
+	import com.worrysprite.manager.BinaryLoaderManager;
 	import com.worrysprite.manager.HeartbeatManager;
 	import com.worrysprite.manager.StageManager;
-	import com.worrysprite.manager.SwfLoaderManager;
-	import com.worrysprite.model.swf.BitAndPos;
-	import com.worrysprite.model.swf.SwfDataVo;
+	import com.worrysprite.model.image.ActionVo;
+	import com.worrysprite.model.image.AEPFile;
 	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.net.URLLoaderDataFormat;
+	import flash.utils.ByteArray;
 	/**
-	 * 特效播放
+	 * 特效播放器
 	 * @author WorrySprite
 	 */
 	public class EffectPlayer extends Bitmap
 	{
 		private static const changeByte:int = 100;
 		
+		/**
+		 * 播放完成回调<br/>
+		 * callback when finished playing
+		 */
 		public var onComplete:Function;
+		/**
+		 * 播放完成回调参数<br/>
+		 * callback params when finished playing
+		 */
 		public var onCompleteParams:Array;
-		public var onSwfLoaded:Function;
-		public var onSwfLoadedParams:Array;
-		protected var frameScripts:Array;
-		protected var frameScriptParams:Array;
+		/**
+		 * 特效加载完成回调<br/>
+		 * callback when effect is loaded
+		 */
+		public var onEffectLoaded:Function;
+		/**
+		 * 特效加载完成回调参数<br/>
+		 * callback params when effect is loaded
+		 */
+		public var onEffectLoadedParams:Array;
+		/**
+		 * 帧回调函数
+		 */
+		public var onEnterFrame:Function;
+		/**
+		 * 帧回调函数参数
+		 */
+		public var onEnterFrameParams:Array;
 		
-		protected var swfData:SwfDataVo;
-		protected var _effectFile:String;
+		/**
+		 * 帧回调函数列表，帧索引从0开始<br/>
+		 * frame callback list, frame index starts from 0
+		 */
+		protected var frameScripts:Array;
+		/**
+		 * 帧回调参数列表，帧索引从0开始<br/>
+		 * frame callback params list, frame index starts from 0
+		 */
+		protected var frameScriptParams:Array;
+		/**
+		 * 特效序列帧数据<br/>
+		 * effect sequence frames
+		 */
+		protected var effectData:ActionVo;
+		/**
+		 * 与特效相关联的动作文件<br/>
+		 * related aep file
+		 */
+		protected var aepFile:AEPFile;
+		
+		protected var _effectURL:String;
 		protected var _isMirror:Boolean;
 		protected var _mirrorX:int;
 		protected var _autoRemoveOnComplete:Boolean;
 		
 		protected var _currentLoop:int;
-		protected var _maxLoop:int;
+		protected var _totalLoop:int;
 		protected var frameIndex:int;
 		protected var _totalFrames:int;
 		protected var _frameRate:Number;
@@ -50,7 +92,7 @@ package com.worrysprite.effect
 		 */
 		public function EffectPlayer(loopTimes:int = int.MAX_VALUE)
 		{
-			_maxLoop = loopTimes;
+			_totalLoop = loopTimes;
 			init();
 		}
 		
@@ -62,16 +104,46 @@ package com.worrysprite.effect
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
 		}
 		
-		protected function loadFile():void
+		protected function loadEffect():void
 		{
-			swfData = null;
+			effectData = null;
 			bitmapData = null;
-			if (_effectFile && _effectFile.lastIndexOf(".swf") >= 0)
+			if (_effectURL)
 			{
-				swfData = EffectManager.getSwf(_effectFile);
-				if (swfData)
+				var index:int = _effectURL.lastIndexOf(".");
+				if (index >= 0)
 				{
-					_totalFrames = swfData.totalFrames;
+					if (_effectURL.toLowerCase().substr(index + 1) == "aep")
+					{
+						aepFile = EffectManager.getEffectFile(_effectURL);
+						if (aepFile)
+						{
+							onFileLoaded();
+						}
+						else
+						{
+							BinaryLoaderManager.getInstance().loadNow(_effectURL, URLLoaderDataFormat.BINARY, onFileLoaded);
+						}
+						return;
+					}
+				}
+			}
+			stop();
+		}
+		
+		protected function onFileLoaded(fileData:ByteArray = null):void
+		{
+			if (fileData)
+			{
+				aepFile = AEPFile.createFromBytes(fileData);
+			}
+			if (aepFile && aepFile.actionList.length)
+			{
+				effectData = aepFile.actionList[0];
+				if (effectData)
+				{
+					_totalFrames = effectData.bitmaps.length;
+					frameRate = 1000 / effectData.interval;
 					updateStatus();
 					if (isRevers)
 					{
@@ -81,49 +153,18 @@ package com.worrysprite.effect
 					{
 						currentFrame = frameIndex + 1;
 					}
-					if (onSwfLoaded != null)
+					if (onEffectLoaded != null)
 					{
-						onSwfLoaded.apply(null, onSwfLoadedParams);
+						onEffectLoaded.apply(null, onEffectLoadedParams);
 					}
 				}
-				else
-				{
-					SwfLoaderManager.getInstance().queueLoad(_effectFile, onFileLoaded);
-				}
-			}
-			else
-			{
-				stop();
-			}
-		}
-		
-		protected function onFileLoaded(displayObj:DisplayObject):void
-		{
-			swfData = EffectManager.getSwf(_effectFile);
-			if (!swfData)
-			{
-				swfData = new SwfDataVo(displayObj as Sprite);
-				EffectManager.addCache(_effectFile, swfData);
-			}
-			_totalFrames = swfData.totalFrames;
-			updateStatus();
-			if (isRevers)
-			{
-				currentFrame = _totalFrames;
-			}
-			else
-			{
-				currentFrame = frameIndex + 1;
-			}
-			if (onSwfLoaded != null)
-			{
-				onSwfLoaded.apply(null, onSwfLoadedParams);
+				EffectManager.addCache(_effectURL, aepFile);
 			}
 		}
 		
 		protected function updateStatus(e:Event = null):void
 		{
-			if (isPlaying && stage && swfData && _frameRate != 0)
+			if (isPlaying && stage && effectData && _frameRate != 0)
 			{
 				if (!isRendering)
 				{
@@ -153,17 +194,30 @@ package com.worrysprite.effect
 		protected function onRender():void
 		{
 			update();
+			if (onEnterFrame != null)
+			{
+				onEnterFrame.apply(null, onEnterFrameParams);
+			}
+			if (frameScripts)
+			{
+				var script:Function = frameScripts[frameIndex];
+				var params:Array = frameScriptParams[frameIndex];
+				if (script != null)
+				{
+					script.apply(null, params);
+				}
+			}
 			if (isRevers)
 			{
 				if (--frameIndex <= 0)
 				{
-					if (++_currentLoop == _maxLoop)	//循环播放结束
+					frameIndex = _totalFrames - 1;
+					if (++_currentLoop >= _totalLoop)	//循环播放结束
 					{
 						onLoop();
 					}
 					else
 					{
-						frameIndex = _totalFrames - 1;
 						if (_loopDelay > 0)
 						{
 							stop();
@@ -176,13 +230,13 @@ package com.worrysprite.effect
 			{
 				if (++frameIndex >= _totalFrames)
 				{
-					if (++_currentLoop == _maxLoop)
+					frameIndex = 0;
+					if (++_currentLoop >= _totalLoop)
 					{
 						onLoop();
 					}
 					else
 					{
-						frameIndex = 0;
 						if (_loopDelay > 0)
 						{
 							stop();
@@ -191,35 +245,22 @@ package com.worrysprite.effect
 					}
 				}
 			}
-			if (frameScripts)
-			{
-				var script:Function = frameScripts[frameIndex];
-				var params:Array = frameScriptParams[frameIndex];
-				if (script != null)
-				{
-					script.apply(null, params);
-				}
-			}
 		}
 		
 		protected function update():void
 		{
-			if (swfData)
+			if (effectData)
 			{
-				var bap:BitAndPos = swfData.getBitAndPos(0, 0, frameIndex);
-				if (bap)
+				bitmapData = effectData.bitmaps[frameIndex];
+				if (_isMirror)
 				{
-					bitmapData = bap.bmpData;
-					if (_isMirror)
-					{
-						super.x = _offsetX + _mirrorX - bap.x;
-						super.y = _offsetY + bap.y;
-					}
-					else
-					{
-						super.x = _offsetX + bap.x * scaleX;
-						super.y = _offsetY + bap.y * scaleY;
-					}
+					super.x = _offsetX + _mirrorX - effectData.offsetXs[frameIndex];
+					super.y = _offsetY + effectData.offsetYs[frameIndex];
+				}
+				else
+				{
+					super.x = _offsetX + effectData.offsetXs[frameIndex] * scaleX;
+					super.y = _offsetY + effectData.offsetYs[frameIndex] * scaleY;
 				}
 			}
 			else
@@ -316,19 +357,20 @@ package com.worrysprite.effect
 		}
 		
 		/**
-		 * 特效文件
+		 * 特效文件，AEP格式
+		 * effect file, *.aep
 		 */
-		public function get effectFile():String
+		public function get effectURL():String
 		{
-			return _effectFile;
+			return _effectURL;
 		}
 		
-		public function set effectFile(value:String):void
+		public function set effectURL(value:String):void
 		{
-			if (_effectFile != value)
+			if (_effectURL != value)
 			{
-				_effectFile = value;
-				loadFile();
+				_effectURL = value;
+				loadEffect();
 			}
 		}
 		
@@ -394,16 +436,16 @@ package com.worrysprite.effect
 		}
 		
 		/**
-		 * 最大循环次数
+		 * 总循环播放次数
 		 */
-		public function get maxLoop():int
+		public function get totalLoop():int
 		{
-			return _maxLoop;
+			return _totalLoop;
 		}
 		
-		public function set maxLoop(value:int):void
+		public function set totalLoop(value:int):void
 		{
-			_maxLoop = value;
+			_totalLoop = value;
 		}
 		
 		/**
