@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../../override.css" type="text/css"><meta name="keywords" content="FileUtils,com.worrysprite.utils.FileUtils,checkDirValid,checkFileValid,createFromByte,createFromString,getConfigByName,getLowerCaseExt,isImage,isJPEG,isPNG,readConfig,splitNameAndExt,splitPathAndName,traceKeyValue,traceRemote"><title>com.worrysprite.utils.FileUtils</title></head><body><script language="javascript" type="text/javascript" src="../../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../../help.js"></script><script language="javascript" type="text/javascript" src="../../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'FileUtils - API Documentation';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../../package-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../../class-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../../all-index-A.html" onclick="loadClassListFrame('../../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../../index.html?com/worrysprite/utils/FileUtils.html&amp;com/worrysprite/utils/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">FileUtils</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#methodSummary">Methods</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("FileUtils"); titleBar_setSubNav(false,false,false,false,false,false,false,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">com.worrysprite.utils</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public final   class  FileUtils</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FileUtils  <img src="../../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr></table><p></p><table cellpadding="0" cellspacing="0" border="0"><tr><td style="white-space:nowrap" valign="top"><b> Runtime Versions :&nbsp;</b></td><td>AIR 1.0</td></tr></table><p></p><p></p><p></p>
+	 文件助手，需要支持File类的AIR运行时，请使用静态方法而不要实例化该类
+	 <p></p><br/><hr></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#FileUtils()" class="signatureLink">FileUtils</a>()</div><div class="summaryTableDescription"></div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><img src="../../../images/AirIcon12x12.gif" width="12" height="12" hspace="0" vspace="0" alt="AIR-only" title="Only available in the AIR runtime">&nbsp;<a href="#checkDirValid()" class="signatureLink">checkDirValid</a>(pathOrURL:String, dir:File = null):Boolean</div><div class="summaryTableDescription">[static] 
+		 检查文件夹是否有效（存在且是文件夹）
+		 check a directory is valid or not
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#checkFileValid()" class="signatureLink">checkFileValid</a>(pathOrURL:String, extensions:Array = null, file:File = null):Boolean</div><div class="summaryTableDescription">[static] 
+		 检查文件是否有效（存在且后缀名符合）
+		 check a file is valid or not(exist and matches extensions)
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#getLowerCaseExt()" class="signatureLink">getLowerCaseExt</a>(file:File):String</div><div class="summaryTableDescription">[static] 
+		 获取文件的小写扩展名
+		 Get lower case of a file extension
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#isImage()" class="signatureLink">isImage</a>(file:File):Boolean</div><div class="summaryTableDescription">[static] 
+		 判断一个文件是否是图像文件（扩展名为jpg、jpeg和png的）
+		 judge a file is image or not
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#isJPEG()" class="signatureLink">isJPEG</a>(file:File):Boolean</div><div class="summaryTableDescription">[static] 
+		 判断一个文件是否是jpg或jpeg文件
+		 Judge a file is jpg or jpeg or not
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#isPNG()" class="signatureLink">isPNG</a>(file:File):Boolean</div><div class="summaryTableDescription">[static] 
+		 判断一个文件是否是png文件
+		 Judge a file is png or not
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#splitNameAndExt()" class="signatureLink">splitNameAndExt</a>(fileName:String):Array</div><div class="summaryTableDescription">[static] 
+		 分割文件名和后缀名（不包含句点）
+		 split file name and extension(not contains dot)
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#splitPathAndName()" class="signatureLink">splitPathAndName</a>(pathOrURL:String):Array</div><div class="summaryTableDescription">[static] 
+		 分割路径和文件名
+		 split path and file name
+		 </div></td><td class="summaryTableOwnerCol">FileUtils</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="FileUtils()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">FileUtils</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function FileUtils()</code><p></p><br/><br/></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="checkDirValid()"></a><a name="checkDirValid(String,flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName"><img src="../../../images/AirIcon12x12.gif" width="12" height="12" hspace="0" vspace="0" alt="AIR-only" title="Only available in the AIR runtime">&nbsp;checkDirValid</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public static function checkDirValid(pathOrURL:String, dir:File = null):Boolean</code><p></p><table cellpadding="0" cellspacing="0" border="0"><tr><td style="white-space:nowrap" valign="top"><b> Runtime Versions :&nbsp;</b></td><td>AIR 1.0</td></tr></table><p></p><p></p><p>
+		 <p>检查文件夹是否有效（存在且是文件夹）</p>
+		 check a directory is valid or not
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">pathOrURL</span>:String</code> &mdash; <p>路径或URL</p>
+		 path or url
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">dir</span>:File</code> (default = <code>null</code>)<code></code> &mdash; <p>一个File对象，将用pathOrURL填充</p>
+		 a File object will filled by pathOrURL
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; <p>true有效，false无效</p>
+		 true is valid, false is invalid
+		 </td></tr></table></div><a name="checkFileValid()"></a><a name="checkFileValid(String,Array,flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">checkFileValid</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function checkFileValid(pathOrURL:String, extensions:Array = null, file:File = null):Boolean</code><p></p><p></p><p>
+		 <p>检查文件是否有效（存在且后缀名符合）</p>
+		 check a file is valid or not(exist and matches extensions)
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">pathOrURL</span>:String</code> &mdash; <p>路径或URL</p>
+		 path or url
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">extensions</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; <p>后缀名/扩展名数组，不包含句点，如["jpg", "png"]</p>
+		 extensions array, not contains dot. example: ["jpg", "png"]
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">file</span>:File</code> (default = <code>null</code>)<code></code> &mdash; <p>一个File对象，将用pathOrURL填充</p>
+		 a File object will filled by pathOrURL
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; <p>true有效，false无效</p>
+		 true is valid, false is invalid
+		 </td></tr></table></div><a name="getLowerCaseExt()"></a><a name="getLowerCaseExt(flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getLowerCaseExt</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function getLowerCaseExt(file:File):String</code><p></p><p></p><p>
+		 <p>获取文件的小写扩展名</p>
+		 Get lower case of a file extension
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">file</span>:File</code> &mdash; <p>要获取的文件</p>
+		 The file to be get extension
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>String</code> &mdash; <p>文件的小写扩展名，如果是文件夹或没有扩展名则返回空字符串</p>
+		 The lower case of the file extension. Return empty string if the file is directory or has no extension.
+		 </td></tr></table></div><a name="isImage()"></a><a name="isImage(flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">isImage</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function isImage(file:File):Boolean</code><p></p><p></p><p>
+		 <p>判断一个文件是否是图像文件（扩展名为jpg、jpeg和png的）</p>
+		 judge a file is image or not
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">file</span>:File</code> &mdash; <p>要判断的文件</p>
+		 the file to be judged
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; 
+		 </td></tr></table></div><a name="isJPEG()"></a><a name="isJPEG(flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">isJPEG</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function isJPEG(file:File):Boolean</code><p></p><p></p><p>
+		 <p>判断一个文件是否是jpg或jpeg文件</p>
+		 Judge a file is jpg or jpeg or not
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">file</span>:File</code> &mdash; <p>要判断的文件</p>
+		 The file to be judged
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; 
+		 </td></tr></table></div><a name="isPNG()"></a><a name="isPNG(flash.filesystem.File)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">isPNG</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function isPNG(file:File):Boolean</code><p></p><p></p><p>
+		 <p>判断一个文件是否是png文件</p>
+		 Judge a file is png or not
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">file</span>:File</code> &mdash; <p>要判断的文件</p>
+		 The file to be judged
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; 
+		 </td></tr></table></div><a name="splitNameAndExt()"></a><a name="splitNameAndExt(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">splitNameAndExt</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function splitNameAndExt(fileName:String):Array</code><p></p><p></p><p>
+		 <p>分割文件名和后缀名（不包含句点）</p>
+		 split file name and extension(not contains dot)
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">fileName</span>:String</code> &mdash; <p>完整的文件名</p>
+		 full file name
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Array</code> &mdash; <p>一个含有两个字符串的数组，第一项是文件名，第二项是后缀/扩展名</p>
+		 an array contains two strings, the first is file name and the second is extension.(not contains dot)
+		 </td></tr></table></div><a name="splitPathAndName()"></a><a name="splitPathAndName(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">splitPathAndName</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public static function splitPathAndName(pathOrURL:String):Array</code><p></p><p></p><p>
+		 <p>分割路径和文件名</p>
+		 split path and file name
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">pathOrURL</span>:String</code> &mdash; <p>路径或URL</p>
+		 path or url
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Array</code> &mdash; <p>一个含有两个字符串的数组，第一项是路径，第二项是文件名</p>
+		 an array contains two strings, the first is path and the second is file name.
+		 </td></tr></table></div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Tue Jan 13 2015, 06:04 PM +08:00  </center></div></body></html><!--<br/>Tue Jan 13 2015, 06:04 PM +08:00  -->

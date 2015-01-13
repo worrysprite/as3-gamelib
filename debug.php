@@ -54,17 +54,8 @@
 	try
 	{
 		$log_file = fopen($today, "a");
-		foreach ($_GET as $key => $value)
-		{
-			if (empty($value))
-			{
-				$string .= $key . "\r\n";
-			}
-			else
-			{
-				$string .= $key . "=>" . $value . "\r\n";
-			}
-		}
+		$data = urldecode(key($_GET));
+		$string = ereg_replace("&", "\r\n", $data);
 		fwrite($log_file, $string);
 		fclose($log_file);
 		echo "success";

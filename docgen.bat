@@ -1,2 +1,2 @@
-asdoc -doc-sources=src
+asdoc -doc-sources=src +configname=air
 pause

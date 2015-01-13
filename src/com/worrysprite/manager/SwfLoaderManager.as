@@ -12,10 +12,11 @@ package com.worrysprite.manager
 	import flash.system.System;
 	import flash.utils.ByteArray;
 	/**
-	 * SWF加载管理器
-	 * @author 王润智
+	 * <p>图像加载管理器，使用<code>Loader</code>加载swf、jpg和png等作为显示对象使用</p>
+	 * Image loader manager, use <code>Loader</code> to load swf, jpg and png as <code>DisplayObject</code>.
+	 * @author WorrySprite
 	 */
-	public class SwfLoaderManager
+	public final class SwfLoaderManager
 	{
 		private static var _instance:SwfLoaderManager;
 		
@@ -37,9 +38,15 @@ package com.worrysprite.manager
 		private var bytesLoaderInfos:Vector.<LoaderInfo>;
 		private var bytesCallback:Vector.<Function>;
 		private var bytesCallbackParams:Vector.<Array>;
-		
+		/**
+		 * <p>加载选项</p>
+		 * Loader options
+		 */
 		public var loaderContext:LoaderContext;
-		
+		/**
+		 * <p>图像加载管理器，使用<code>Loader</code>加载swf、jpg和png等作为显示对象使用</p>
+		 * Image loader manager, use <code>Loader</code> to load swf, jpg and png as <code>DisplayObject</code>.
+		 */
 		public function SwfLoaderManager()
 		{
 			if (_instance != null)
@@ -75,6 +82,10 @@ package com.worrysprite.manager
 			queueLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
 		}
 		
+		/**
+		 * <p>获取唯一实例</p>
+		 * Get the single instance
+		 */
 		public static function getInstance():SwfLoaderManager
 		{
 			if (_instance == null)
@@ -85,11 +96,16 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 队列加载，可以指定全局loaderContext供整个队列使用
-		 * @param	url	加载地址
-		 * @param	callback	加载完成后的回调
-		 * @param	callbackParams	回调函数参数
-		 * @param	addCache	添加缓存
+		 * <p>将url添加到队列加载，可以指定loaderContext供整个队列使用。如果目标url已经在队列中，或者正在独立加载，则保存回调函数，等待加载完成后一起回调。</p>
+		 * Add the url into queue to load, use loaderContext for the whole queue. If target url is already in the queue or loading stand alone, the callback function will be saved and invoked together after loaded.
+		 * @param	url	<p>加载地址</p>
+		 * The url to be load
+		 * @param	callback	<p>加载完成后的回调，不能为null，第一个参数必须是<code>DisplayObject</code>类型</p>。
+		 * The callback on loaded, must be not null, the first parameter must be <code>DisplayObject</code>.
+		 * @param	callbackParams	<p>回调函数参数</p>
+		 * Parameters of the callback.
+		 * @param	addCache	<p>添加缓存</p>
+		 * Add loaded data into cache.
 		 */
 		public function queueLoad(url:String, callback:Function, callbackParams:Array = null, addCache:Boolean = false):void
 		{
@@ -143,7 +159,8 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 加载队列长度
+		 * <p>加载队列长度</p>
+		 * Current length of the loading queue.
 		 */
 		public function get queueLength():int
 		{
@@ -151,7 +168,8 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 队列正在处理的URL
+		 * <p>队列正在处理的URL</p>
+		 * Current URL of the queue processing
 		 */
 		public function get processingURL():String
 		{
@@ -159,12 +177,18 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 立刻开启一个并发加载
-		 * @param	url	加载地址
-		 * @param	callback	回调函数
-		 * @param	callbackParams	回调函数参数
-		 * @param	context	加载选项，若未设置则使用全局loaderContext
-		 * @param	addCache	添加缓存
+		 * <p>立刻开启一个独立的加载。如果目标url已经在队列中，将从队列中移除该url的加载请求，并开启新的独立加载，原队列中的回调函数会在该独立加载完成时同时调用。如果目标url正在独立加载，则保存回调函数，等待加载完成后一起回调。</p>
+		 * Starts a stand alone loader immediately. If target url is already in the queue, the request url in the queue will be removed and starts a new stand alone loader, the callbacks in the queue will be invoked together after the stand alone loader loaded. If target url is already loading stand alone, the callback function will be saved and invoked together after loaded.
+		 * @param	url	<p>加载地址</p>
+		 * The url to be load
+		 * @param	callback	<p>加载完成后的回调，不能为null，第一个参数必须是<code>DisplayObject</code>类型</p>。
+		 * The callback on loaded, must be not null, the first parameter must be <code>DisplayObject</code>.
+		 * @param	callbackParams	<p>回调函数参数</p>
+		 * Parameters of the callback.
+		 * @param	context	<p>加载选项，若未设置则使用全局loaderContext</p>
+		 * Loader options, use loaderContext if not set.
+		 * @param	addCache	<p>添加缓存</p>
+		 * Add loaded data into cache.
 		 */
 		public function loadNow(url:String, callback:Function, callbackParams:Array = null, context:LoaderContext = null, addCache:Boolean = false):void
 		{
@@ -205,7 +229,7 @@ package com.worrysprite.manager
 			}
 			else if (cache[url] == IS_QUEUE_LOADING)
 			{
-				//正在队列加载，从队列中移除开启新的并发加载
+				//正在队列加载，从队列中移除开启新的独立加载
 				var index:int = urlQueue.indexOf(url);
 				urlQueue.splice(index, 1);
 				
@@ -232,11 +256,21 @@ package com.worrysprite.manager
 			}
 		}
 		
+		/**
+		 * <p>从缓存获取显示对象</p>
+		 * Get <code>DisplayObject</code> from cache.
+		 * @param	url	<p>缓存时的URL</p>
+		 * The URL of caching.
+		 */
 		public function getDisplayObject(url:String):DisplayObject
 		{
 			return cache[url] as DisplayObject;
 		}
 		
+		/**
+		 * <p>清空缓存</p>
+		 * Clear all cached DisplayObjects
+		 */
 		public function clearCache():void
 		{
 			for (var key:String in cache)
@@ -249,6 +283,18 @@ package com.worrysprite.manager
 			System.gc();
 		}
 		
+		/**
+		 * <p>从二进制字节数组加载</p>
+		 * Load from binary bytes.
+		 * @param	bytes	<p>要加载的字节数组</p>
+		 * The binary bytes want to load.
+		 * @param	callback	<p>加载完成后的回调，第一个参数必须是<code>DisplayObject</code>类型</p>。
+		 * The callback on loaded, the first parameter must be <code>DisplayObject</code>.
+		 * @param	callbackParams	<p>回调函数参数</p>
+		 * Parameters of the callback.
+		 * @param	context	<p>加载选项，若未设置则使用全局loaderContext</p>
+		 * Loader options, use loaderContext if not set.
+		 */
 		public function loadBytes(bytes:ByteArray, callback:Function, callbackParams:Array = null, context:LoaderContext = null):void
 		{
 			if (!bytes || callback == null)

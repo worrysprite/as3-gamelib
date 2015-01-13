@@ -7,10 +7,11 @@ package com.worrysprite.manager
 	import flash.net.URLRequest;
 	import flash.system.System;
 	/**
-	 * 二进制数据加载管理
-	 * @author 王润智
+	 * <p>二进制数据加载管理</p>
+	 * Binary loader manager
+	 * @author WorrySprite
 	 */
-	public class BinaryLoaderManager
+	public final class BinaryLoaderManager
 	{
 		private static var _instance:BinaryLoaderManager;
 		
@@ -32,6 +33,10 @@ package com.worrysprite.manager
 		private var cache:Object;				//缓存
 		private var needCache:Object;			//记录是否需要缓存
 		
+		/**
+		 * <p>二进制数据加载管理</p>
+		 * Binary loader manager
+		 */
 		public function BinaryLoaderManager()
 		{
 			if (_instance != null)
@@ -64,6 +69,10 @@ package com.worrysprite.manager
 			queueLoader.addEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
 		}
 		
+		/**
+		 * <p>获取唯一实例</p>
+		 * Get the single instance
+		 */
 		public static function getInstance():BinaryLoaderManager
 		{
 			if (_instance == null)
@@ -74,12 +83,18 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 队列加载，如果加载目标已经并发加载中，则只会将回调添加到并发加载中
-		 * @param	url	加载地址
-		 * @param	format	加载格式，URLLoaderDataFormat里的值
-		 * @param	callback	回调函数，至少带一个Object类型的参数
-		 * @param	callbackParams	回调函数参数
-		 * @param	addCache	加入缓存，对于加载同一个URL多次调用，只要有一个调用使用加入缓存则会加入缓存
+		 * <p>将url添加到队列加载。如果目标url已经在队列中，或者正在独立加载，则保存回调函数，等待加载完成后一起回调。</p>
+		 * Add the url into queue to load. If target url is already in the queue or loading stand alone, the callback function will be saved and invoke together after loaded.
+		 * @param	url	<p>加载地址</p>
+		 * The url to be load
+		 * @param	format	<p>数据格式，<code>URLLoaderDataFormat</code>里的值</p>
+		 * Data format, values in <code>URLLoaderDataFormat</code>
+		 * @param	callback	<p>加载完成后的回调，不能为null，至少带一个Object类型的参数</p>
+		 * The callback on loaded, must be not null, the first parameter must be <code>Object</code>.
+		 * @param	callbackParams	<p>回调函数参数</p>
+		 * Parameters of the callback.
+		 * @param	addCache	<p>添加缓存</p>
+		 * Add loaded data into cache.
 		 */
 		public function queueLoad(url:String, format:String, callback:Function, callbackParams:Array = null, addCache:Boolean = false):void
 		{
@@ -135,7 +150,8 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 加载队列长度
+		 * <p>加载队列长度</p>
+		 * Current length of the loading queue.
 		 */
 		public function get queueLength():int
 		{
@@ -143,7 +159,8 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 队列正在处理的URL
+		 * <p>队列正在处理的URL</p>
+		 * Current URL of the queue processing
 		 */
 		public function get processingURL():String
 		{
@@ -151,12 +168,18 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * 立刻开启一个并发加载，如果URL在加载队列中则从队列中移除，如果format与队列加载中不一致，将使用本次调用的值
-		 * @param	url	加载地址
-		 * @param	format	加载格式，URLLoaderDataFormat里的值
-		 * @param	callback	回调函数，至少带一个Object类型的参数
-		 * @param	callbackParams	回调参数
-		 * @param	addCache	加入缓存，对于加载同一个URL多次调用，只要有一个调用使用加入缓存则会加入缓存
+		 * <p>立刻开启一个独立的加载。如果目标url已经在队列中，将从队列中移除该url的加载请求，并开启新的独立加载（如果format与队列加载时的不一致，将使用本次传递的值），原队列中的回调函数会在该独立加载完成时同时调用。如果目标url正在独立加载，则保存回调函数，等待加载完成后一起回调。</p>
+		 * Starts a stand alone loader immediately. If target url is already in the queue, the request url in the queue will be removed and starts a new stand alone loader(if the format parameter in queue is different from this invoke, it will use the value passed by this invoke.), the callbacks in the queue will be invoked together after the stand alone loader loaded. If target url is already loading stand alone, the callback function will be saved and invoked together after loaded.
+		 * @param	url	<p>加载地址</p>
+		 * The url to be load
+		 * @param	format	<p>数据格式，<code>URLLoaderDataFormat</code>里的值</p>
+		 * Data format, values in <code>URLLoaderDataFormat</code>
+		 * @param	callback	<p>加载完成后的回调，不能为null，至少带一个Object类型的参数</p>
+		 * The callback on loaded, must be not null, the first parameter must be <code>Object</code>.
+		 * @param	callbackParams	<p>回调函数参数</p>
+		 * Parameters of the callback.
+		 * @param	addCache	<p>添加缓存</p>
+		 * Add loaded data into cache.
 		 */
 		public function loadNow(url:String, format:String, callback:Function, callbackParams:Array = null, addCache:Boolean = false):void
 		{
@@ -224,13 +247,20 @@ package com.worrysprite.manager
 			}
 		}
 		
+		/**
+		 * <p>从缓存获取数据</p>
+		 * Get data from cache.
+		 * @param	url	<p>缓存时的URL</p>
+		 * The URL of caching.
+		 */
 		public function getDataFromCache(url:String):Object
 		{
 			return cache[url];
 		}
 		
 		/**
-		 * 清空缓存
+		 * <p>清空缓存</p>
+		 * Clear all cached datas
 		 */
 		public function clearCache():void
 		{

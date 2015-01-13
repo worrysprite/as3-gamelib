@@ -19,18 +19,18 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 远程日志地址<br/>
-		 * remote log url
+		 * 远程日志地址
+		 * <p>Remote log url</p>
 		 */
 		public static var traceURL:String;
 		/**
-		 * 远程trace时发送的方法，URLRequestMethod中的常量<br/>
-		 * remote trace method, use constant in URLRequestMethod
+		 * 远程trace时发送的方法，URLRequestMethod中的常量，默认值GET
+		 * <p>Remote trace method, use constant in URLRequestMethod, default is GET</p>
 		 */
 		public static var traceMethod:String = URLRequestMethod.GET;
 		/**
-		 * 返回值回调函数，需要有一个参数<br/>
-		 * call back function to receive returned value, must have one param
+		 * 返回值回调函数，需要有一个参数
+		 * <p>Callback function to receive returned value, must have one param</p>
 		 */
 		public static var resultFunc:Function;
 		
@@ -53,10 +53,10 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 发送信息到远程服务器<br/>
-		 * send message to remote server
-		 * @param	...rest	像trace()一样的参数<br/>
-		 * use it like trace()
+		 * 发送信息到远程服务器
+		 * Send message to remote server
+		 * @param	...rest	像trace()一样的参数
+		 * Use it like trace()
 		 */
 		public static function traceRemote(...rest):void
 		{
@@ -67,7 +67,7 @@ package com.worrysprite.utils
 			var request:URLRequest = new URLRequest(traceURL);
 			request.method = traceMethod;
 			request.contentType = "text/plain";
-			request.data = rest.join("_");
+			request.data = encodeURI(rest.join(" "));
 			
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onTraceComplete);
@@ -76,10 +76,10 @@ package com.worrysprite.utils
 		}
 		
 		/**
-		 * 发送键值对到远程服务器<br/>
-		 * send key value map to remote server
-		 * @param	webParams	网页参数，像key1=value1&amp;key2=value2&amp;key3=value3<br/>
-		 * web params such as key1=value1&amp;key2=value2&amp;key3=value3
+		 * 发送键值对到远程服务器
+		 * <p>Send key value map to remote server</p>
+		 * @param	webParams	网页参数，像key1=value1&amp;key2=value2&amp;key3=value3
+		 * <p>Web params such as key1=value1&amp;key2=value2&amp;key3=value3</p>
 		 */
 		public static function traceKeyValue(webParams:String):void
 		{
@@ -90,7 +90,7 @@ package com.worrysprite.utils
 			var request:URLRequest = new URLRequest(traceURL);
 			request.method = traceMethod;
 			request.contentType = "application/x-www-form-urlencoded";
-			request.data = new URLVariables(webParams);
+			request.data = new URLVariables(encodeURI(webParams));
 			
 			var loader:URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onTraceComplete);
