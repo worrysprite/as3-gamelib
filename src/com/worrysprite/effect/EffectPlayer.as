@@ -209,7 +209,7 @@ package com.worrysprite.effect
 				{
 					if (_effectURL.toLowerCase().substr(index + 1) == "aep")
 					{
-						aepFile = EffectManager.getEffectFile(_effectURL);
+						aepFile = EffectCache.getEffectFile(_effectURL);
 						if (aepFile)
 						{
 							onFileLoaded();
@@ -258,7 +258,7 @@ package com.worrysprite.effect
 						onEffectLoaded.apply(null, onEffectLoadedParams);
 					}
 				}
-				EffectManager.addCache(_effectURL, aepFile);
+				EffectCache.addCache(_effectURL, aepFile);
 			}
 		}
 		

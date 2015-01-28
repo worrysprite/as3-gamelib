@@ -5,7 +5,8 @@ package com.worrysprite.effect
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
 	/**
-	 * 动作播放器
+	 * 动作播放器，播放使用工具打包出来的动作文件
+	 * <p>Action player, play actions packed by tools.</p>
 	 * @author WorrySprite
 	 */
 	public class ActionPlayer extends EffectPlayer
@@ -16,11 +17,19 @@ package com.worrysprite.effect
 		private var _actionIndex:int;
 		private var _actionName:String;
 		
+		/**
+		 * 动作播放器，播放使用工具打包出来的动作文件
+		 * <p>Action player, play actions packed by tools.</p>
+		 */
 		public function ActionPlayer()
 		{
 			super();
 		}
 		
+		/**
+		 * 加载完后保存动作列表，设置动作名和动作索引
+		 * <p>Save action list on loaded and set action name and index.</p>
+		 */
 		override protected function onFileLoaded(fileData:ByteArray = null):void
 		{
 			if (fileData)
@@ -50,7 +59,7 @@ package com.worrysprite.effect
 				{
 					onEffectLoaded.apply(null, onEffectLoadedParams);
 				}
-				EffectManager.addCache(_effectURL, aepFile);
+				EffectCache.addCache(_effectURL, aepFile);
 			}
 		}
 		
@@ -73,6 +82,10 @@ package com.worrysprite.effect
 			}
 		}
 		
+		/**
+		 * 当前正在播放的动作索引，从0开始
+		 * <p>Action index of current playing, starts from 0.</p>
+		 */
 		public function get actionIndex():int
 		{
 			return _actionIndex;
@@ -94,6 +107,10 @@ package com.worrysprite.effect
 			changeAction(_actionList[_actionIndex]);
 		}
 		
+		/**
+		 * 当前正在播放的动作名
+		 * <p>Action name of current playing.</p>
+		 */
 		public function get actionName():String
 		{
 			return _actionName;
@@ -119,6 +136,10 @@ package com.worrysprite.effect
 			}
 		}
 		
+		/**
+		 * 总动作数量
+		 * <p>Total action count.</p>
+		 */
 		public function get actionCount():int
 		{
 			if (_actionList)
@@ -128,11 +149,19 @@ package com.worrysprite.effect
 			return 0;
 		}
 		
+		/**
+		 * 动作列表，返回一个浅复制
+		 * <p>Action list, return a shallow copy.</p>
+		 */
 		public function get actionList():Vector.<ActionVo>
 		{
 			return _actionList.slice();
 		}
 		
+		/**
+		 * 当前动作
+		 * <p>Current action object.</p>
+		 */
 		public function get currentAction():ActionVo
 		{
 			return effectData;
