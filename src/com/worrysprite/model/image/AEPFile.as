@@ -31,6 +31,7 @@ package com.worrysprite.model.image
 		private var jngList:Vector.<JNGFile>;
 		private var fileLoaded:int;
 		private var fileTotal:int;
+		public var jpegAlgorithm:int;
 		
 		/**
 		 * AEP文件格式，储存动作或特效序列帧
@@ -177,6 +178,7 @@ package com.worrysprite.model.image
 			if (_quality <= 100)	//压缩为jng
 			{
 				jng = new JNGFile(_quality);	//每个动作对应一个jng文件
+				jng.jpegAlgorithm = jpegAlgorithm;
 				jngList.push(jng);
 			}
 			//写入偏移量列表
@@ -190,7 +192,7 @@ package com.worrysprite.model.image
 			{
 				if (jng)
 				{
-					jng.addBitmap(action.bitmaps[i]);
+					jng.addBitmap(action.bitmaps[i], action.directory + "_" + i);
 				}
 				else
 				{

@@ -99,7 +99,14 @@ package com.worrysprite.utils
 			var result:Array = [];
 			for each(var element:XML in dataList)
 			{
-				result[int(element.@index)] = parseData(element);
+				if (element.@index)
+				{
+					result[int(element.@index)] = parseData(element);
+				}
+				else
+				{
+					result.push(parseData(element);
+				}
 			}
 			return result;
 		}
