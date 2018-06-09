@@ -2,7 +2,7 @@ package com.worrysprite.view.component
 {
 	import com.worrysprite.effect.CooldownEffect;
 	import com.worrysprite.enum.Common;
-	import com.worrysprite.manager.ResourceManager;
+	import com.worrysprite.manager.BmpResManager;
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -41,7 +41,7 @@ package com.worrysprite.view.component
 		{
 			//初始化使用普通状态
 			currentStatus = _upStatus;
-			background = new Bitmap(ResourceManager.getBitmapResource(_upStatus));
+			background = new Bitmap(BmpResManager.getBitmapResource(_upStatus));
 			centerPoint = new Point(background.width * 0.5, background.height * 0.5);
 			addChild(background);
 			
@@ -92,7 +92,7 @@ package com.worrysprite.view.component
 			if (currentStatus != status)
 			{
 				currentStatus = status;
-				background.bitmapData = ResourceManager.getBitmapResource(status);
+				background.bitmapData = BmpResManager.getBitmapResource(status);
 				background.x = centerPoint.x - background.width * 0.5;
 				background.y = centerPoint.y - background.height * 0.5;
 			}

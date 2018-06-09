@@ -16,7 +16,7 @@ package com.worrysprite.manager
 	 * 游戏资源
 	 * @author 王润智
 	 */
-	public class ResourceManager
+	public class BmpResManager
 	{
 		private static const classBmpCache:Object = new Object();
 		private static const bmdCache:Object = new Object();	//位图缓存
@@ -179,12 +179,12 @@ package com.worrysprite.manager
 			return false;
 		}
 		
-		static public function getResourceByID(ClassPrefix:String, id:int):BitmapData
+		static public function getBitmapByID(ClassPrefix:String, id:int):BitmapData
 		{
 			return getBitmapResource(ClassPrefix + id);
 		}
 		
-		static public function getResourceByName(ClassPrefix:String, name:String):BitmapData
+		static public function getBitmapByName(ClassPrefix:String, name:String):BitmapData
 		{
 			return getBitmapResource(ClassPrefix + name);
 		}

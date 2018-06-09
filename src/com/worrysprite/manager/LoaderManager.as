@@ -7,13 +7,13 @@ package com.worrysprite.manager
 	import flash.net.URLRequest;
 	import flash.system.System;
 	/**
-	 * <p>二进制数据加载管理</p>
-	 * Binary loader manager
+	 * <p>加载管理器，内置队列加载和独立加载</p>
+	 * Loader manager
 	 * @author WorrySprite
 	 */
-	public final class BinaryLoaderManager
+	public final class LoaderManager
 	{
-		private static var _instance:BinaryLoaderManager;
+		private static var _instance:LoaderManager;
 		
 		private static const IS_QUEUE_LOADING:String = "is_queue_loading";
 		
@@ -34,10 +34,10 @@ package com.worrysprite.manager
 		private var needCache:Object;			//记录是否需要缓存
 		
 		/**
-		 * <p>二进制数据加载管理</p>
-		 * Binary loader manager
+		 * <p>加载管理器，内置队列加载和独立加载</p>
+		 * Loader manager
 		 */
-		public function BinaryLoaderManager()
+		public function LoaderManager()
 		{
 			if (_instance != null)
 			{
@@ -73,11 +73,11 @@ package com.worrysprite.manager
 		 * <p>获取唯一实例</p>
 		 * Get the single instance
 		 */
-		public static function getInstance():BinaryLoaderManager
+		public static function getInstance():LoaderManager
 		{
 			if (_instance == null)
 			{
-				_instance = new BinaryLoaderManager();
+				_instance = new LoaderManager();
 			}
 			return _instance;
 		}

@@ -1,6 +1,6 @@
 package com.worrysprite.effect
 {
-	import com.worrysprite.manager.BinaryLoaderManager;
+	import com.worrysprite.manager.LoaderManager;
 	import com.worrysprite.manager.HeartbeatManager;
 	import com.worrysprite.manager.StageManager;
 	import com.worrysprite.model.image.ActionVo;
@@ -216,7 +216,7 @@ package com.worrysprite.effect
 						}
 						else
 						{
-							BinaryLoaderManager.getInstance().loadNow(_effectURL, URLLoaderDataFormat.BINARY, onFileLoaded);
+							LoaderManager.getInstance().loadNow(_effectURL, URLLoaderDataFormat.BINARY, onFileLoaded);
 						}
 						return;
 					}

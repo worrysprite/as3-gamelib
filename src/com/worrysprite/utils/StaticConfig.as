@@ -105,7 +105,7 @@ package com.worrysprite.utils
 				}
 				else
 				{
-					result.push(parseData(element);
+					result.push(parseData(element));
 				}
 			}
 			return result;
