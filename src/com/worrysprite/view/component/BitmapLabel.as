@@ -4,7 +4,7 @@ package com.worrysprite.view.component
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	/**
-	 * 位图文本标签
+	 * 位图文本
 	 * @author 王润智
 	 */
 	public class BitmapLabel extends Bitmap

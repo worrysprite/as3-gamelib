@@ -18,6 +18,7 @@ package com.worrysprite.manager
 		
 		private static const allTimers:Dictionary = new Dictionary();
 		private static const frameCalls:Dictionary = new Dictionary();
+		private static var updateCalls:Dictionary = new Dictionary();
 		
 		public static function init(stage:Stage):void
 		{
@@ -39,6 +40,11 @@ package com.worrysprite.manager
 				{
 					call.apply(null, frameCalls[call]);
 				}
+				for (call in updateCalls)
+				{
+					call.apply(null, updateCalls[call]);
+				}
+				updateCalls = new Dictionary();
 				lastTime += frameTime;
 			}
 			for (call in allTimers)
@@ -105,6 +111,21 @@ package com.worrysprite.manager
 				stopTimer = true;
 			}
 			delete allTimers[call];
+		}
+		
+		/**
+		 * 添加下一帧的回调，通常用于对象多个属性修改时暂不重新计算，而只是标记属性改变，等到下一帧才应用属性来刷新数据或显示
+		 * @param	call	回调函数
+		 * @param	params	回调参数
+		 */
+		static public function addUpdateCall(call:Function, params:Array = null):void
+		{
+			updateCalls[call] = params;
+		}
+		
+		static public function removeUpdateCall(call:Function):void
+		{
+			delete updateCalls[call];
 		}
 	}
 }

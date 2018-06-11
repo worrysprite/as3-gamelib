@@ -10,7 +10,7 @@ package com.worrysprite.view.component
 	import flash.geom.Point;
 	
 	/**
-	 * 标准按钮
+	 * 位图按钮
 	 * @author 王润智
 	 */
 	public class BitmapButton extends Sprite
