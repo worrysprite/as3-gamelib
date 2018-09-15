@@ -1,13 +1,17 @@
-worrysprite
+as3 game library
 ===========
+### AS3通用游戏库，包含序列帧播放、加载管理、缓存池、心跳管理、调试日志等工具
+* 序列帧播放支持自定义帧率、动作和方向，支持反向播放，支持帧回调，支持自动加载，支持循环播放等特性。
+>采用的自定义的文件格式，需要配合[打包工具](https://github.com/worrysprite/AnimationEditor)一起使用
+* 位图资源管理，提供加载、缓存位图资源的功能
+* 心跳管理，提供帧回调、计时回调等功能
+* 加载管理器，提供独立加载、队列加载和缓存内容的功能
+>用于加载文本或二进制内容
+* 对象池，提供获取和回收对象
+* 图像加载管理器，提供独立加载、队列加载和缓存内容的功能
+>用于加载PNG、JPG或SWF图像资源
+* UI定位管理器，用于管理UI布局
 
-as3 tools library
 
-AS3工具库，包含特效播放、加载管理、缓存池、心跳管理、调试日志等
-
-特效播放需要配合特效打包工具一起使用
-https://github.com/worrysprite/AnimationEditor
-
-注释慢慢在完善中，使用FD打开工程文件可直接编译出SWC
-
-有问题请联系worrysprite@gmail.com
+## build
+使用[FlashDevelop](http://www.flashdevelop.org)打开工程文件可直接编译出SWC
