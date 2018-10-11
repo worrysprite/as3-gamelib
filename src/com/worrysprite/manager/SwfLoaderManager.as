@@ -22,12 +22,12 @@ package com.worrysprite.manager
 		
 		private static const IS_QUEUE_LOADING:String = "is_queue_loading";
 		
-		private var queueLoader:LoaderVo;
-		private var queueRequest:URLRequest;
 		private var urlQueue:Vector.<String>;
 		private var callbackQueue:Object;
 		private var callbackParamQueue:Object;
-		private var queueIsLoading:Boolean;
+		private var concurrency:uint;
+		private var _maxConcurrency:uint = 10;
+		private var _queueLoading:Array = [];
 		
 		private var callbackMap:Object;
 		private var callbackParamMap:Object;
@@ -38,6 +38,7 @@ package com.worrysprite.manager
 		private var bytesLoaderInfos:Vector.<LoaderInfo>;
 		private var bytesCallback:Vector.<Function>;
 		private var bytesCallbackParams:Vector.<Array>;
+		
 		/**
 		 * <p>加载选项</p>
 		 * Loader options
@@ -74,12 +75,6 @@ package com.worrysprite.manager
 			bytesLoaderInfos = new Vector.<LoaderInfo>();
 			bytesCallback = new Vector.<Function>();
 			bytesCallbackParams = new Vector.<Array>();
-			
-			//初始化加载器和请求
-			queueLoader = new LoaderVo();
-			queueRequest = new URLRequest();
-			queueLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onQueueLoaded);
-			queueLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
 		}
 		
 		/**
@@ -136,10 +131,13 @@ package com.worrysprite.manager
 				callbackQueue[url] = new <Function>[callback];
 				callbackParamQueue[url] = new <Array>[callbackParams];
 				needCache[url] = addCache;
-				if (!queueIsLoading)
+				if (concurrency < _maxConcurrency)
 				{
-					queueIsLoading = true;
-					loadNext();
+					++concurrency;
+					var loader:LoaderVo = ObjectPool.getObject(LoaderVo) as LoaderVo;
+					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onQueueLoaded);
+					loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
+					loadNext(loader);
 				}
 			}
 			else if (cache[url] == IS_QUEUE_LOADING)
@@ -168,12 +166,29 @@ package com.worrysprite.manager
 		}
 		
 		/**
-		 * <p>队列正在处理的URL</p>
+		 * <p>队列正在并发加载的URL列表</p>
 		 * Current URL of the queue processing
 		 */
-		public function get processingURL():String
+		public function get processingURL():Array
 		{
-			return queueRequest.url;
+			return _queueLoading;
+		}
+		
+		public function get maxConcurrency():uint 
+		{
+			return _maxConcurrency;
+		}
+		
+		public function set maxConcurrency(value:uint):void 
+		{
+			if (value)
+			{
+				_maxConcurrency = value;
+			}
+			else
+			{
+				_maxConcurrency = 1;
+			}
 		}
 		
 		/**
@@ -323,7 +338,7 @@ package com.worrysprite.manager
 			
 			var loader:LoaderVo = info.loader as LoaderVo;
 			var url:String = loader.url;
-			trace("加载成功", url);
+			//trace("加载成功", url);
 			var displayObj:DisplayObject = loader.content;
 			if (needCache[url])
 			{
@@ -370,8 +385,11 @@ package com.worrysprite.manager
 		
 		private function onQueueLoaded(e:Event):void
 		{
-			var displayObj:DisplayObject = queueLoader.content;
-			var url:String = queueRequest.url;
+			var info:LoaderInfo = e.currentTarget as LoaderInfo;
+			var loader:LoaderVo = info.loader as LoaderVo;
+			
+			var displayObj:DisplayObject = loader.content;
+			var url:String = loader.url;
 			if (needCache[url])
 			{
 				cache[url] = displayObj;
@@ -387,26 +405,29 @@ package com.worrysprite.manager
 				mc.stop();
 			}
 			
-			var callbackList:Vector.<Function> = callbackQueue[queueRequest.url];
-			var paramsList:Vector.<Array> = callbackParamQueue[queueRequest.url];
-			delete callbackQueue[queueRequest.url];
-			delete callbackParamQueue[queueRequest.url];
+			var callbackList:Vector.<Function> = callbackQueue[url];
+			var paramsList:Vector.<Array> = callbackParamQueue[url];
+			delete callbackQueue[url];
+			delete callbackParamQueue[url];
 			
-			queueLoader.unload();
-			loadNext();
+			loader.unload();
+			loadNext(loader);
 			
 			loopCallback(callbackList, paramsList, displayObj);
 		}
 		
 		private function onQueueLoadError(e:IOErrorEvent):void
 		{
-			var url:String = queueRequest.url;
-			trace("队列加载失败，url =", queueRequest.url);
+			var info:LoaderInfo = e.currentTarget as LoaderInfo;
+			var loader:LoaderVo = info.loader as LoaderVo;
+			
+			var url:String = loader.url;
+			trace("队列加载失败，url =", url);
 			delete cache[url];
 			delete needCache[url];
 			delete callbackQueue[url];
 			delete callbackParamQueue[url];
-			loadNext();
+			loadNext(loader);
 		}
 		
 		private function onBytesLoaded(e:Event):void
@@ -446,6 +467,7 @@ package com.worrysprite.manager
 			}
 		}
 		
+		//回调所有的加载请求
 		private function loopCallback(callbackList:Vector.<Function>, paramsList:Vector.<Array>, data:DisplayObject):void
 		{
 			var callback:Function;
@@ -469,17 +491,27 @@ package com.worrysprite.manager
 			}
 		}
 		
-		private function loadNext():void
+		private function loadNext(loader:LoaderVo):void
 		{
+			var index:int = _queueLoading.indexOf(loader.url);
+			if (index >= 0)
+			{
+				_queueLoading.splice(index, 1);
+			}
 			if (urlQueue.length)
 			{
-				queueRequest.url = urlQueue.shift();
-				queueLoader.load(queueRequest, loaderContext);
+				var request:URLRequest = ObjectPool.getObject(URLRequest) as URLRequest;
+				request.url = urlQueue.shift();
+				_queueLoading.push(request.url);
+				loader.load(request, loaderContext);
 			}
 			else
 			{
-				queueRequest.url = null;
-				queueIsLoading = false;
+				//没有加载任务，回收loader
+				loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onQueueLoaded);
+				loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onQueueLoadError);
+				ObjectPool.disposeObject(loader, LoaderVo);
+				--concurrency;
 			}
 		}
 	}

@@ -23,10 +23,11 @@ package com.worrysprite.manager
 		private static const urlCache:Dictionary = new Dictionary(true); // bmp作为key，对应url
 		private static const bmps:Object = new Object(); // 储存bmp的引用
 		private static const sizes:Object = new Object(); // 储存size的引用
-		private static const funs:Object = new Object(); // 存储callback的引用
+		private static const callbackDict:Object = new Object(); // 存储callback的引用
+		private static const paramsDict:Object = new Object();
 		private static const defBmdX:BitmapData = new BitmapData(1, 1, true, 0x0);
 		
-		static public function getBitmap(url:String, bmp:Bitmap, size:Point = null, callback:Function = null):void
+		static public function getBitmap(url:String, bmp:Bitmap, size:Point = null, callback:Function = null, params:Array = null):void
 		{
 			deleteBitmap(bmp); // 删除曾经的引用
 			if (url == "" || !checkIsImage(url)) // 空图片，啥都不显示
@@ -40,7 +41,7 @@ package com.worrysprite.manager
 				setBmp(bmp, bmdResult, size);
 				if (callback != null)
 				{
-					callback();
+					callback.apply(null, params);
 				}
 			}
 			else
@@ -56,11 +57,16 @@ package com.worrysprite.manager
 					sizes[url] = new Vector.<Point>();
 				}
 				sizes[url].push(size);
-				if (funs[url] == null)
+				if (callbackDict[url] == null)
 				{
-					funs[url] = new Vector.<Function>();
+					callbackDict[url] = new Vector.<Function>();
 				}
-				funs[url].push(callback);
+				callbackDict[url].push(callback);
+				if (paramsDict[url] == null)
+				{
+					paramsDict[url] = new Vector.<Array>();
+				}
+				paramsDict[url].push(params);
 				if (bmdCache[url] == null) // Loader不存在才加载，不然会自动处理
 				{
 					var loader:LoaderVo = new LoaderVo();
@@ -87,7 +93,8 @@ package com.worrysprite.manager
 					{
 						ary.splice(index, 1);
 						sizes[url].splice(index, 1);
-						funs[url].splice(index, 1);
+						callbackDict[url].splice(index, 1);
+						paramsDict[url].splice(index, 1);
 					}
 				}
 			}
@@ -111,6 +118,7 @@ package com.worrysprite.manager
 			info.removeEventListener(Event.COMPLETE, completeHandler);
 			info.removeEventListener(IOErrorEvent.IO_ERROR, errorHandler);
 			var url:String = loader.url;
+			//trace("加载成功", url);
 			var obj:Bitmap;
 			if (loader.content is Bitmap)
 			{
@@ -134,19 +142,18 @@ package com.worrysprite.manager
 			bmdCache[url] = bmd;
 			var tmpBmps:Vector.<Bitmap> = bmps[url] as Vector.<Bitmap>;
 			var tmpSizes:Vector.<Point> = sizes[url] as Vector.<Point>;
-			var tmpFuns:Vector.<Function> = funs[url] as Vector.<Function>;
+			var tmpCallbackDict:Vector.<Function> = callbackDict[url] as Vector.<Function>;
+			var tmpParamsDict:Vector.<Array> = paramsDict[url] as Vector.<Array>;
 			for (var i:int = 0; i < tmpBmps.length; ++i)
 			{
 				delete urlCache[tmpBmps[i]];
 				setBmp(tmpBmps[i], bmd, tmpSizes[i]);
-				if (tmpFuns[i])
+				if (tmpCallbackDict[i])
 				{
-					tmpFuns[i]();
+					tmpCallbackDict[i].apply(null, tmpParamsDict[i]);
 				}
 			}
-			delete sizes[url];
-			delete bmps[url];
-			delete funs[url];
+			clearLoader(url);
 		}
 		
 		private static function errorHandler(e:Event):void
@@ -154,6 +161,18 @@ package com.worrysprite.manager
 			var info:LoaderInfo = e.currentTarget as LoaderInfo;
 			info.removeEventListener(Event.COMPLETE, completeHandler);
 			info.removeEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+			var loader:LoaderVo = info.loader as LoaderVo;
+			trace("加载失败", loader.url);
+			delete bmdCache[loader.url];
+			clearLoader(loader.url);
+		}
+		
+		private static function clearLoader(url:String):void 
+		{
+			delete sizes[url];
+			delete bmps[url];
+			delete callbackDict[url];
+			delete paramsDict[url];
 		}
 		
 		/**

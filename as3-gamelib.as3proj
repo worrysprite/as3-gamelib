@@ -4,7 +4,7 @@
   <output>
     <movie outputType="CustomBuild" />
     <movie input="" />
-    <movie path="bin\worrysprite.swc" />
+    <movie path="bin\as3-gamelib.swc" />
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
