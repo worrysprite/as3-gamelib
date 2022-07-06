@@ -24,6 +24,8 @@ package com.worrysprite.manager
 		{
 			if (stage)
 			{
+				if (!StageManager.globalStage)
+					StageManager.init(stage);
 				lastTime = getTimer();
 				stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 				frameTime = 1000 / stage.frameRate;

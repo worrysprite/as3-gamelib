@@ -1,11 +1,14 @@
 package
 {
-	import com.worrysprite.manager.HeartbeatManager;
+	import com.worrysprite.effect.EffectPlayer;
 	import com.worrysprite.manager.LoaderManager;
+	import com.worrysprite.manager.StageManager;
+	import com.worrysprite.utils.LoaderQueue;
 	import com.worrysprite.utils.StaticConfig;
 	import com.worrysprite.view.component.menu.Menu;
 	import com.worrysprite.view.component.menu.MenuItem;
 	import com.worrysprite.view.component.menu.PopupMenu;
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.net.URLLoaderDataFormat;
@@ -16,21 +19,28 @@ package
 	 */
 	public final class Test extends Sprite
 	{
+		private var queue:LoaderQueue = new LoaderQueue();
+		
 		public function Test()
 		{
-			HeartbeatManager.init(stage);
+			StageManager.init(stage);
 			
 			// test static config
 			//testConfig();
 			
 			// test menu
-			testMenu();
+			//testMenu();
 			
 			// test popup menu
 			//testPopupMenu();
 			
 			// test radio button
 			
+			// test action player
+			//testActionPlayer();
+			
+			//test queue load
+			testQueueLoad();
 		}
 		
 		private function testConfig():void
@@ -82,6 +92,28 @@ package
 			});
 		}
 		
+		private function testActionPlayer():void
+		{
+			var player:EffectPlayer = new EffectPlayer();
+			x
+			player.onEffectLoaded = function():void
+			{
+				player.play();
+			}
+			player.effectURL = "output.aep";
+			addChild(player);
+		}
+		
+		private function testQueueLoad():void
+		{
+			queue.maxConcurrency = 1;
+			for (var i:int = 0; i < 12; ++i)
+			{
+				queue.loadImg("imgs/" + (10000 + i) + ".png", function(data:DisplayObject, index:int):void
+				{
+					trace(data, index);
+				}, [i]);
+			}
+		}
 	}
-
 }

@@ -1,4 +1,4 @@
-package enum
+package com.worrysprite.enum
 {
 	/**
 	 * ...

@@ -1,6 +1,6 @@
 package com.worrysprite.model.image
 {
-	import com.worrysprite.manager.SwfLoaderManager;
+	import com.worrysprite.manager.LoaderManager;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.PNGEncoderOptions;
@@ -86,7 +86,7 @@ package com.worrysprite.model.image
 			}
 			fileLoaded = 0;
 			fileTotal = 0;
-			var loader:SwfLoaderManager = SwfLoaderManager.getInstance();
+			var loader:LoaderManager = LoaderManager.getInstance();
 			for (var i:int = 0; i < _actionList.length; ++i)
 			{
 				var action:ActionVo = new ActionVo();
@@ -123,7 +123,7 @@ package com.worrysprite.model.image
 						var pngLength:int = _bytes.readUnsignedInt();
 						var pngBytes:ByteArray = new ByteArray();
 						_bytes.readBytes(pngBytes, 0, pngLength);
-						loader.loadBytes(pngBytes, onLoaded, [action.bitmaps, k]);
+						loader.loadImageBytes(pngBytes, onLoaded, [action.bitmaps, k]);
 					}
 					trace("file total changed", fileTotal);
 				}

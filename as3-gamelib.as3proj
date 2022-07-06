@@ -8,8 +8,8 @@
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
-    <movie version="3" />
-    <movie minorVersion="9" />
+    <movie version="24" />
+    <movie minorVersion="0" />
     <movie platform="AIR" />
     <movie background="#FFFFFF" />
   </output>
@@ -79,7 +79,7 @@
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand>"$(CompilerPath)\bin\compc.exe" +configname=air -include-sources "$(ProjectDir)\src" -output "$(OutputDir)\$(OutputName)"</preBuildCommand>
+  <preBuildCommand>"$(CompilerPath)\bin\compc.bat" +configname=air -include-sources "$(ProjectDir)\src" -output "$(OutputDir)\$(OutputName)"</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->

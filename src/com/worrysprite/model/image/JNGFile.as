@@ -1,7 +1,7 @@
 package com.worrysprite.model.image
 {
-	import com.worrysprite.manager.SwfLoaderManager;
-	import enum.JpegAlgorithmEnum;
+	import com.worrysprite.manager.LoaderManager;
+	import com.worrysprite.enum.JpegAlgorithmEnum;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
@@ -61,7 +61,7 @@ package com.worrysprite.model.image
 			var dataLength:uint;
 			var jpgBytes:ByteArray;
 			var bmp:BitmapData;
-			var loader:SwfLoaderManager = SwfLoaderManager.getInstance();
+			var loader:LoaderManager = LoaderManager.getInstance();
 			fileLoaded = 0;
 			for (var i:int = 0; i < _bitmaps.length; ++i)
 			{
@@ -75,7 +75,7 @@ package com.worrysprite.model.image
 				dataLength = _bytes.readUnsignedInt();
 				jpgBytes = new ByteArray();
 				_bytes.readBytes(jpgBytes, 0, dataLength);
-				loader.loadBytes(jpgBytes, onLoaded, [i]);
+				loader.loadImageBytes(jpgBytes, onLoaded, [i]);
 				
 				//读取alpha
 				for (var j:int = 0; j < height; ++j)
@@ -97,7 +97,7 @@ package com.worrysprite.model.image
 			var dataLength:uint;
 			var jpgBytes:ByteArray;
 			var bmp:BitmapData;
-			var loader:SwfLoaderManager = SwfLoaderManager.getInstance();
+			var loader:LoaderManager = LoaderManager.getInstance();
 			fileLoaded = 0;
 			for (var i:int = 0; i < _bitmaps.length; ++i)
 			{
@@ -112,7 +112,7 @@ package com.worrysprite.model.image
 				dataLength = _bytes.readUnsignedInt();
 				jpgBytes = new ByteArray();
 				_bytes.readBytes(jpgBytes, 0, dataLength);
-				loader.loadBytes(jpgBytes, onLoaded, [i]);
+				loader.loadImageBytes(jpgBytes, onLoaded, [i]);
 				
 				//读取alpha
 				for (var j:int = 0; j < height; ++j)
